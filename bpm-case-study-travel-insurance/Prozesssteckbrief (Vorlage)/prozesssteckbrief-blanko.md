@@ -34,9 +34,10 @@ Ziel dieses Prozesses ist es, den Abschluss einer Reisekrankenversicherung zu au
 
 | System | Details |
 | ------ | ------- |
-|        |         |
-|        |         |
-|        |         |
+|    API    |         |
+|    Partnersystem   |         |
+|    E-Mail-Versandsystem    |         |
+|    Vertragsystem|    |
 
 ## Prozessbeginn
 
@@ -91,3 +92,12 @@ Folgende Variablen werden während der Ausführung im Prozesskontext abgelegt:
 |               |      |          |         |
 |               |      |          |         |
 |               |      |          |         |
+
+##Verknüpfte Dokumente 
+
+### DMN Tabelle 
+| DMN's Name |  Details |
+|--------|--------|
+|  "Selbstbehalt ermitteln" |   |
+|"Alter,Wohnort,Anzahl prüfen"|   |
+|"Persönlichen Daten validieren"|  |
