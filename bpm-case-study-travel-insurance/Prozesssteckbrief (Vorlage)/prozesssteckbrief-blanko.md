@@ -26,9 +26,9 @@ Ziel dieses Prozesses ist es, den Abschluss einer Reisekrankenversicherung zu au
 
 | Personengruppe      | Details |
 | ------------------- | ------- |
-| Prozesseigner:innen |         |
-| Prozessbeteiligte   |         |
-| Kund:innen          |         |
+| Prozesseigner:innen |  Versicherungsunternehmen    |
+| Prozessbeteiligte   |    Partnersystem     |
+| Kund:innen          |  Versicherungsnehmerin   |
 
 ### Anwendungssysteme
 
@@ -45,8 +45,6 @@ Ziel dieses Prozesses ist es, den Abschluss einer Reisekrankenversicherung zu au
 | Startbedingung | Details |
 | -------------- | ------- |
 |   Der Antrag der Versicherungsnehmerin   |    auf der Onlineportal eingegebene Informationen     |
-|                |         |
-|                |         |
 
 ### Input
 
