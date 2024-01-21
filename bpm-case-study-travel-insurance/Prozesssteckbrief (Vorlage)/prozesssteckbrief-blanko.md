@@ -6,7 +6,7 @@
 ![](prozessdiagramm.png)
 
 ## Kurzbeschreibung
-
+Der Versicherungsnehmerin macht sein Antrag auf der Onlineportal des Versicherungsunternehmens, das Versicherungsunternehmen prüft anschließend die Materialien und pro Partnersystem prüft, ob er ein neuer Kunde ist. Abschließend wird ein Selbstbehalt ermitteln , eine Bestätigungs-E-Mail an den Kunden gesendet und die Der Vertrag wird ausgedruckt und versendet.
 
 
 ## Technischer Name
@@ -71,15 +71,14 @@ Ziel dieses Prozesses ist es, den Abschluss einer Reisekrankenversicherung zu au
 
 | Endbedingung | Details |
 | ------------ | ------- |
-|              |         |
-|              |         |
-|              |         |
+| Wenn die Informationsüberprüfung erfolgreich ist   |     Vertragsunterlage drucken und senden    |
+|   Wenn die Überprüfung der Informationen fehlschlägt oder fehlt     |    Von der Versicherungsunternehmen abgelehnt     |
 
 ### Ergebnis / Output
 
 | Geschäftsobjekt | Zielsystem | Verantwortlich |
 | --------------- | ---------- | -------------- |
-|                 |            |                |
+|  Versicherungsvertrag  |      Vertragsystem,Partnersystem,E-Mail-Versandsystem      |                |
 |                 |            |                |
 |                 |            |                |
 
