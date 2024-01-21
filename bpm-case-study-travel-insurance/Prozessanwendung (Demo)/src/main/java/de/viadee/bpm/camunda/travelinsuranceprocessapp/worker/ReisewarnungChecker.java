@@ -28,9 +28,7 @@ public class ReisewarnungChecker {
         try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
             HttpGet request = new HttpGet("https://travelwarning.api.bund.dev/");
             String response = EntityUtils.toString(httpClient.execute(request).getEntity());
-            // 解析响应内容
-            // 假设API返回的是JSON格式的警告列表
-            // 如果存在警告，则返回警告内容字符串；否则返回空字符串
+
             return parseWarnings(response);
         } catch (Exception e) {
             e.printStackTrace();
@@ -39,18 +37,12 @@ public class ReisewarnungChecker {
     }
 
     private String parseWarnings(String jsonResponse) {
-        // 解析JSON并检查是否有警告
-        // 这里需要根据API的具体响应格式来实现
-        // 示例: 如果有警告，则返回警告内容；否则返回空字符串
-        return ""; // 伪代码
+        return ""; 
     }
 
     private void sendEmail(String recipient, String content) {
-        // 使用JavaMail API发送邮件
-        // 配置邮件服务器参数
         Properties properties = new Properties();
         properties.put("mail.smtp.host", "smtp.example.com");
-        // 更多配置...
 
         Session session = Session.getDefaultInstance(properties);
         try {
