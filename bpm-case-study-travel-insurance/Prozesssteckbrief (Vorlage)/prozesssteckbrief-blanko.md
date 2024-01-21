@@ -51,6 +51,7 @@ Ziel dieses Prozesses ist es, den Abschluss einer Reisekrankenversicherung zu au
 ### Input
 
 | Eingabe | Details |
+|---------|---------|
 | Address | String  |
 | Geburtstag |  Date  |
 | Versicherungsnummer|  Nummer |
