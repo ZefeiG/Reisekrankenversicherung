@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<bpmn:definitions xmlns:bpmn="http://www.omg.org/spec/BPMN/20100524/MODEL" xmlns:bpmndi="http://www.omg.org/spec/BPMN/20100524/DI" xmlns:dc="http://www.omg.org/spec/DD/20100524/DC" xmlns:zeebe="http://camunda.org/schema/zeebe/1.0" xmlns:di="http://www.omg.org/spec/DD/20100524/DI" xmlns:modeler="http://camunda.org/schema/modeler/1.0" id="Definitions_1plc5ld" targetNamespace="http://bpmn.io/schema/bpmn" exporter="Camunda Modeler" exporterVersion="5.17.0" modeler:executionPlatform="Camunda Cloud" modeler:executionPlatformVersion="8.3.0">
+  <bpmn:process id="CheckTravelDataProcess" name="Check travel data" isExecutable="true">
+    <bpmn:startEvent id="StartEvent_1" name="Travel data read">
+      <bpmn:outgoing>Flow_0hjsqm4</bpmn:outgoing>
+    </bpmn:startEvent>
+    <bpmn:endEvent id="Event_16vd6o8" name="Travel data checked">
+      <bpmn:incoming>Flow_1nc27uk</bpmn:incoming>
+    </bpmn:endEvent>
+    <bpmn:sequenceFlow id="Flow_0hjsqm4" sourceRef="StartEvent_1" targetRef="Gateway_0d9z6xl" />
+    <bpmn:parallelGateway id="Gateway_0d9z6xl">
+      <bpmn:incoming>Flow_0hjsqm4</bpmn:incoming>
+      <bpmn:outgoing>Flow_0kfwyky</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0nnmem2</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0kaqy58</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:sequenceFlow id="Flow_0kfwyky" sourceRef="Gateway_0d9z6xl" targetRef="Activity_1o1y3wh" />
+    <bpmn:serviceTask id="Activity_1o1y3wh" name="Check travel cost">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="check-travel-cost" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0kfwyky</bpmn:incoming>
+      <bpmn:outgoing>Flow_0rilr6w</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_0nnmem2" sourceRef="Gateway_0d9z6xl" targetRef="Activity_15mzv5p" />
+    <bpmn:serviceTask id="Activity_15mzv5p" name="Check travel start with end">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="check-travel-start-with-end" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0nnmem2</bpmn:incoming>
+      <bpmn:outgoing>Flow_0kv3zhl</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_0kaqy58" sourceRef="Gateway_0d9z6xl" targetRef="Activity_00fa4a2" />
+    <bpmn:serviceTask id="Activity_00fa4a2" name="Check travel start">
+      <bpmn:extensionElements>
+        <zeebe:taskDefinition type="check-travel-start" />
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0kaqy58</bpmn:incoming>
+      <bpmn:outgoing>Flow_0msxzz8</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_0rilr6w" sourceRef="Activity_1o1y3wh" targetRef="Gateway_00dafjc" />
+    <bpmn:parallelGateway id="Gateway_00dafjc">
+      <bpmn:incoming>Flow_0rilr6w</bpmn:incoming>
+      <bpmn:incoming>Flow_0kv3zhl</bpmn:incoming>
+      <bpmn:incoming>Flow_0msxzz8</bpmn:incoming>
+      <bpmn:outgoing>Flow_1nc27uk</bpmn:outgoing>
+    </bpmn:parallelGateway>
+    <bpmn:sequenceFlow id="Flow_0kv3zhl" sourceRef="Activity_15mzv5p" targetRef="Gateway_00dafjc" />
+    <bpmn:sequenceFlow id="Flow_0msxzz8" sourceRef="Activity_00fa4a2" targetRef="Gateway_00dafjc" />
+    <bpmn:sequenceFlow id="Flow_1nc27uk" sourceRef="Gateway_00dafjc" targetRef="Event_16vd6o8" />
+  </bpmn:process>
+  <bpmndi:BPMNDiagram id="BPMNDiagram_1">
+    <bpmndi:BPMNPlane id="BPMNPlane_1" bpmnElement="CheckTravelDataProcess">
+      <bpmndi:BPMNShape id="_BPMNShape_StartEvent_2" bpmnElement="StartEvent_1">
+        <dc:Bounds x="179" y="99" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="157" y="142" width="80" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_16vd6o8_di" bpmnElement="Event_16vd6o8">
+        <dc:Bounds x="652" y="99" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="642" y="142" width="56" height="27" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_048fugi_di" bpmnElement="Gateway_0d9z6xl">
+        <dc:Bounds x="265" y="92" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1jo1emu_di" bpmnElement="Activity_1o1y3wh">
+        <dc:Bounds x="370" y="77" width="100" height="80" />
+        <bpmndi:BPMNLabel />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1sevsrz_di" bpmnElement="Activity_15mzv5p">
+        <dc:Bounds x="370" y="190" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1jcxsek_di" bpmnElement="Activity_00fa4a2">
+        <dc:Bounds x="370" y="300" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Gateway_13kfdbz_di" bpmnElement="Gateway_00dafjc">
+        <dc:Bounds x="525" y="92" width="50" height="50" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNEdge id="Flow_0hjsqm4_di" bpmnElement="Flow_0hjsqm4">
+        <di:waypoint x="215" y="117" />
+        <di:waypoint x="265" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0kfwyky_di" bpmnElement="Flow_0kfwyky">
+        <di:waypoint x="315" y="117" />
+        <di:waypoint x="370" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0nnmem2_di" bpmnElement="Flow_0nnmem2">
+        <di:waypoint x="290" y="142" />
+        <di:waypoint x="290" y="230" />
+        <di:waypoint x="370" y="230" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0kaqy58_di" bpmnElement="Flow_0kaqy58">
+        <di:waypoint x="290" y="142" />
+        <di:waypoint x="290" y="340" />
+        <di:waypoint x="370" y="340" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0rilr6w_di" bpmnElement="Flow_0rilr6w">
+        <di:waypoint x="470" y="117" />
+        <di:waypoint x="525" y="117" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0kv3zhl_di" bpmnElement="Flow_0kv3zhl">
+        <di:waypoint x="470" y="230" />
+        <di:waypoint x="550" y="230" />
+        <di:waypoint x="550" y="142" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0msxzz8_di" bpmnElement="Flow_0msxzz8">
+        <di:waypoint x="470" y="340" />
+        <di:waypoint x="550" y="340" />
+        <di:waypoint x="550" y="142" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1nc27uk_di" bpmnElement="Flow_1nc27uk">
+        <di:waypoint x="575" y="117" />
+        <di:waypoint x="652" y="117" />
+      </bpmndi:BPMNEdge>
+    </bpmndi:BPMNPlane>
+  </bpmndi:BPMNDiagram>
+</bpmn:definitions>
