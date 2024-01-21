@@ -44,7 +44,7 @@ Ziel dieses Prozesses ist es, den Abschluss einer Reisekrankenversicherung zu au
 
 | Startbedingung | Details |
 | -------------- | ------- |
-|                |         |
+|   Der Antrag der Versicherungsnehmerin   |    auf der Onlineportal eingegebene Informationen     |
 |                |         |
 |                |         |
 
