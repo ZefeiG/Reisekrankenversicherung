@@ -1,3 +1,6 @@
+
+
+
 # [Name des Prozesses]
 
 ![](prozessdiagramm.png)
@@ -16,6 +19,7 @@ Der eindeutige Bezeichner des Prozesses lautet wie folgt:
 
 ### Prozessziele
 
+Ziel dieses Prozesses ist es, den Abschluss einer Reisekrankenversicherung zu automatisieren. Damit Kunden Online-Einkäufe tätigen und modernisieren können.
 
 
 ### Stakeholder
@@ -47,10 +51,10 @@ Der eindeutige Bezeichner des Prozesses lautet wie folgt:
 ### Input
 
 | Eingabe | Details |
-| ------- | ------- |
-|         |         |
-|         |         |
-|         |         |
+| Address | String  |
+| Geburtstag |  Date  |
+| Versicherungsnummer|  Nummer |
+|    Reiseziel   |    String    |
 
 ## Prozessschritte
 
