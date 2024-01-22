@@ -36,8 +36,7 @@ Automatisieren Sie die Antragsbearbeitung, um manuelle Eingaben und menschliche 
 | System | Details |
 | ------ | ------- |
 |    API-Aufruf   |   Verwendet es das HTTP-Protokoll, um eine Anfrage an den Server zu senden, ob eine Reisewarnung vorliegt und ob die IBAN korrekt ist.   |
-|    Partnersystem   |      Es automatisiert
-abgeglichen wird, ob die Kundin bereits vorhanden ist.    |
+|    Partnersystem   |      Es automatisiert abgeglichen wird, ob die Kundin bereits vorhanden ist.    |
 |    E-Mail-Versandsystem    |     E-Mail-Benachrichtigung an Kunden senden    |
 |    Vertragsystem |  Eine Reisekrankenversicherung wird im Vertragssystem gespeichert.  |
 
@@ -79,7 +78,8 @@ abgeglichen wird, ob die Kundin bereits vorhanden ist.    |
 
 | Geschäftsobjekt | Zielsystem | Verantwortlich |
 | --------------- | ---------- | -------------- |
-|  Versicherungsvertrag  |      Vertragsystem,Partnersystem,E-Mail-Versandsystem      |                |
+|  Bestätigungsmail |  ||
+|  Ausgedruckten Versicherungsvertrag  |      Vertragsystem,Drucksystem     |        Output-Managements        |
 |                 |            |                |
 |                 |            |                |
 
