@@ -71,7 +71,7 @@ Automatisieren Sie die Antragsbearbeitung, um manuelle Eingaben und menschliche 
 
 | Endbedingung | Details |
 | ------------ | ------- |
-| Wenn die Informationsüberprüfung erfolgreich ist   |     Vertragsunterlage drucken und senden    |
+| Wenn die Informationsüberprüfung erfolgreich ist   |  Bestätigungsmail senden und Vertragsunterlage drucken & senden    |
 |   Wenn die Überprüfung der Informationen fehlschlägt oder fehlt     |    Von der Versicherungsunternehmen abgelehnt     |
 
 ### Ergebnis / Output
