@@ -1,7 +1,7 @@
 
 
 
-# [Name des Prozesses]
+# [Reisekrankenversicherung]
 
 ![](prozessdiagramm.png)
 
