@@ -26,9 +26,9 @@ Ziel dieses Prozesses ist es, den Abschluss einer Reisekrankenversicherung zu au
 
 | Personengruppe      | Details |
 | ------------------- | ------- |
-| Prozesseigner:innen |  Versicherungsunternehmen    |
-| Prozessbeteiligte   |    Partnersystem     |
-| Kund:innen          |  Versicherungsnehmerin   |
+| Prozesseigner:innen |  Das Versicherungsunternehmen ist der Prozesseigner, da es die letzte Verantwortung und Entscheidungsbefugnis über den Prozess hat.   |
+| Prozessbeteiligte   |    Interne Mitarbeiter des Unternehmens sowie externe Partner, die Partnersysteme bereitstellen, die bestimmte Aufgaben oder Aktivitäten innerhalb des Geschäftsprozesses übernehmen.    |
+| Kund:innen          |  Alle Versicherungsnehmerin, die die Informationen auf der Onlineportal ausgefüllt haben. |
 
 ### Anwendungssysteme
 
