@@ -46,14 +46,14 @@ Automatisieren Sie die Antragsbearbeitung, um manuelle Eingaben und menschliche 
 
 | Startbedingung | Details |
 | -------------- | ------- |
-|   Der Antragformular der Versicherungsnehmerin   |    auf der Onlineportal eingegebene Informationen     |
+|   Der Antragformular der Versicherungsnehmerin   |   das auf der Onlineportal eingegebene Informationen     |
 
 ### Input
 
 | Eingabe | Details |
 |---------|---------|
 | Das Formular,das im Onlineportal ausgefüllt wird. | Vorname , Nachname ,Alter , Herkunft ,Address ,Reisebeginn ,Reiseende ,Gesamtkosten ,Geburtstag ,Reiseziel ,Versicherungsnummer ,IBAN ,E-Mail ,Anzahl der Versicherte Personen    |
-| API-Aufruf |  Das Senden einer Anfrage über das HTTP-Protokoll an einen Server.()  |
+| API-Aufruf |  Das Senden einer Anfrage über das HTTP-Protokoll an einen Server.( travelwarning.api, api-nijas, travel-insurance-api)  |
 
 ## Prozessschritte
 
