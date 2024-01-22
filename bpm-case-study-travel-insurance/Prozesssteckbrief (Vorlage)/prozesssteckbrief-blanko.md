@@ -52,8 +52,8 @@ Automatisieren Sie die Antragsbearbeitung, um manuelle Eingaben und menschliche 
 
 | Eingabe | Details |
 |---------|---------|
-| Das Formular,das im Onlineportal ausgefüllt wird. | Address,Geburtstag,Reiseziel,Kundennummer,IBAN,E-Mail,Anzahl der Versicherte Personen    |
-| API-Aufruf |  das Senden einer Anfrage über das HTTP-Protokoll an einen Server   |
+| Das Formular,das im Onlineportal ausgefüllt wird. | Vorname , Nachname ,Alter , Herkunft ,Address ,Reisebeginn ,Reiseende ,Gesamtkosten ,Geburtstag ,Reiseziel ,Versicherungsnummer ,IBAN ,E-Mail ,Anzahl der Versicherte Personen    |
+| API-Aufruf |  Das Senden einer Anfrage über das HTTP-Protokoll an einen Server.()  |
 
 ## Prozessschritte
 
@@ -78,10 +78,9 @@ Automatisieren Sie die Antragsbearbeitung, um manuelle Eingaben und menschliche 
 
 | Geschäftsobjekt | Zielsystem | Verantwortlich |
 | --------------- | ---------- | -------------- |
-|  Bestätigungsmail |  ||
+|  Bestätigungsmail | E-Mail-Versandsystem  | SendGird Outbound Connector|
 |  Ausgedruckten Versicherungsvertrag  |      Vertragsystem,Drucksystem     |        Output-Managements        |
-|                 |            |                |
-|                 |            |                |
+
 
 ## Prozesskontext
 
@@ -96,8 +95,8 @@ Folgende Variablen werden während der Ausführung im Prozesskontext abgelegt:
 ## Verknüpfte Dokumente 
 
 ### DMN Tabelle 
-| DMN's Name |  Details |
-|--------|--------|
-|  "Selbstbehalt ermitteln" |   |
-|"Alter,Wohnort,Anzahl prüfen"|   |
-|"Persönlichen Daten validieren"|  |
+| DMN's Name |  
+|--------|
+|  "Selbstbehalt ermitteln" |   
+|"Alter,Wohnort,Anzahl prüfen"|   
+|"Persönlichen Daten validieren"|  
