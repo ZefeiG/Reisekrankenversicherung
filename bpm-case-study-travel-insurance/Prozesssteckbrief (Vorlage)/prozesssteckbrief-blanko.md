@@ -19,7 +19,8 @@ Der eindeutige Bezeichner des Prozesses lautet wie folgt:
 
 ### Prozessziele
 
-Ziel dieses Prozesses ist es, den Abschluss einer Reisekrankenversicherung zu automatisieren. Damit Kunden Online-Einkäufe tätigen und modernisieren können.
+Ziel dieses Prozesses ist es, den Abschluss einer Reisekrankenversicherung zu automatisieren. Damit Kunden Online-Einkäufe tätigen können.
+Automatisieren Sie die Antragsbearbeitung, um manuelle Eingaben und menschliche Fehler zu reduzieren, was zu einer schnelleren Genehmigung und Ausstellung der Versicherung führt. Und es setzt Personalressourcen frei, damit sich die Mitarbeiter auf höherwertige Aufgaben zu konzentrieren können.
 
 
 ### Stakeholder
@@ -34,10 +35,11 @@ Ziel dieses Prozesses ist es, den Abschluss einer Reisekrankenversicherung zu au
 
 | System | Details |
 | ------ | ------- |
-|    API    |         |
-|    Partnersystem   |         |
-|    E-Mail-Versandsystem    |         |
-|    Vertragsystem|    |
+|    API-Aufruf   |   Verwendet es das HTTP-Protokoll, um eine Anfrage an den Server zu senden, ob eine Reisewarnung vorliegt und ob die IBAN korrekt ist.   |
+|    Partnersystem   |      Es automatisiert
+abgeglichen wird, ob die Kundin bereits vorhanden ist.    |
+|    E-Mail-Versandsystem    |     E-Mail-Benachrichtigung an Kunden senden    |
+|    Vertragsystem |  Eine Reisekrankenversicherung wird im Vertragssystem gespeichert.  |
 
 ## Prozessbeginn
 
@@ -45,16 +47,14 @@ Ziel dieses Prozesses ist es, den Abschluss einer Reisekrankenversicherung zu au
 
 | Startbedingung | Details |
 | -------------- | ------- |
-|   Der Antrag der Versicherungsnehmerin   |    auf der Onlineportal eingegebene Informationen     |
+|   Der Antragformular der Versicherungsnehmerin   |    auf der Onlineportal eingegebene Informationen     |
 
 ### Input
 
 | Eingabe | Details |
 |---------|---------|
-| Address | String  |
-| Geburtstag |  Date  |
-| Versicherungsnummer|  Nummer |
-|    Reiseziel   |    String    |
+| Das Formular,das im Onlineportal ausgefüllt wird. | Address,Geburtstag,Reiseziel,Kundennummer,IBAN,E-Mail,Anzahl der Versicherte Personen    |
+| API-Aufruf |  das Senden einer Anfrage über das HTTP-Protokoll an einen Server   |
 
 ## Prozessschritte
 
