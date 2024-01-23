@@ -52,7 +52,21 @@ Automatisieren Sie die Antragsbearbeitung, um manuelle Eingaben und menschliche 
 
 | Eingabe | Details |
 |---------|---------|
-| Das Formular,das im Onlineportal ausgefüllt wird. | Vorname , Nachname ,Alter , Herkunft ,Address ,Reisebeginn ,Reiseende ,Gesamtkosten ,Geburtstag ,Reiseziel ,Versicherungsnummer ,IBAN ,E-Mail ,Anzahl der Versicherte Personen    |
+|Vorname|Text field|
+| Nachname|Text field|
+|Geburtsdatum |Date time|
+|E-Mail|Text field|
+|Partnernummer|Nummer|
+|IBAN|Nummer|
+|Straße |Text field|
+|Hausnummer |Nummer|
+|PLZ|Nummer|
+|Herkunft |Text field|
+|Reiseziel |Text field|
+|Reisebeginn|Date time|
+|Reiseende|Date time|
+|Gesamtkosten |Nummer|
+|Anzahl der Personen |Nummer|
 | API-Aufruf |  Das Senden einer Anfrage über das HTTP-Protokoll an einen Server.( travelwarning.api, api-nijas, travel-insurance-api)  |
 
 ## Prozessschritte
