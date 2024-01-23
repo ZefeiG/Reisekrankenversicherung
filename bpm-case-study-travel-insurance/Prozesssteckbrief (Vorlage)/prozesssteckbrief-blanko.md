@@ -6,7 +6,15 @@
 ![](prozessdiagramm.png)
 
 ## Kurzbeschreibung
-Der Versicherungsnehmerin macht sein Antrag auf der Onlineportal des Versicherungsunternehmens, das Versicherungsunternehmen prüft anschließend die Materialien und pro Partnersystem prüft, ob er ein neuer Kunde ist. Abschließend wird ein Selbstbehalt ermitteln , eine Bestätigungs-E-Mail an den Kunden gesendet und die Der Vertrag wird ausgedruckt und versendet.
+Der Versicherungsnehmerin macht sein Antragsformular auf der Onlineportal des Versicherungsunternehmens. Sobald das Antragsformular im System eingegangen ist, beginnt der Prozess.
+
+Der erste Schritt besteht darin, mit Hilfe des DMN Tabelle "Persönlichen Daten validieren"zu überprüfen, ob die Angaben des Versicherungsnehmerin  den Anforderungen entsprechen， wie z. B. die Bestimmungen zu Reisezeit und Reisekosten. 
+Danach folgt das DMN Tabelle  "Alter,Wohnort,Anzahl prüfen", mit dem geprüft wird, ob Alter, Herkunftsort und Anzahl der versicherten Personen den Anforderungen entsprechen.
+Bei einem "Misserfolg" oder einem "sonstigen Fehler" im Prozess wird dem Versicherungsnehmer  eine Ablehnungsnachricht übermittelt.
+
+Der zweite Schritt ist die Prüfung der Reisewarnungen. Stellen Sie fest, ob es Rückgabedaten im Json-Format gibt, indem Sie die REST-API aufrufen. Wenn nicht, beenden Sie die Reisewarnung als Task; wenn ja, müssen Sie die Rückgabe an den Versicherungsnehmer senden
+
+...
 
 
 ## Technischer Name
