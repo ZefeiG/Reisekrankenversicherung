@@ -93,8 +93,10 @@ Automatisieren Sie die Antragsbearbeitung, um manuelle Eingaben und menschliche 
 
 | Endbedingung | Details |
 | ------------ | ------- |
-| Wenn die Informationsüberprüfung erfolgreich ist   |  Bestätigungsmail senden und Vertragsunterlage drucken & senden    |
-|   Wenn die Überprüfung der Informationen fehlschlägt oder fehlt     |    Von der Versicherungsunternehmen abgelehnt     |
+| :heavy_check_mark: Gutfall | Wenn alle Informationsüberprüfung erfolgreich ist, senden Bestätigungsmail und drucken & senden Vertragsunterlage         |
+| :x: Fehlerfall 1           | Wenn das Audit nicht genehmigt wird, sendet das System eine Ablehnungsmitteilung an den Versicherungsnehmer |
+| :x: Fehlerfall 2           | Kurzbeschreibung der Bedingungen bei Eintreten von Fehlerfall 2 |
+
 
 ### Ergebnis / Output
 
