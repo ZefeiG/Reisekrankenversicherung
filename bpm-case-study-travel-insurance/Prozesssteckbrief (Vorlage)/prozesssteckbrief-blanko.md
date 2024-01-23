@@ -15,6 +15,8 @@ Bei einem "Misserfolg" oder einem "sonstigen Fehler" im Prozess wird dem Versich
 Der zweite Schritt ist die Prüfung der Reisewarnungen. Stellen Sie fest, ob es Rückgabedaten im Json-Format gibt, indem Sie die REST-API aufrufen. Wenn nicht, beenden Sie die Reisewarnung als Task; wenn ja, müssen Sie die Rückgabe an den Versicherungsnehmer senden
 
 ...
+...
+...
 
 
 ## Technischer Name
@@ -93,9 +95,8 @@ Automatisieren Sie die Antragsbearbeitung, um manuelle Eingaben und menschliche 
 
 | Endbedingung | Details |
 | ------------ | ------- |
-| :heavy_check_mark: Gutfall | Wenn alle Informationsüberprüfung erfolgreich ist, senden Bestätigungsmail und drucken & senden Vertragsunterlage         |
+| :heavy_check_mark: Gutfall | Wenn alle Informationsüberprüfung erfolgreich ist, senden Bestätigungsmail und drucken & senden Vertragsunterlage   |
 | :x: Fehlerfall 1           | Wenn das Audit nicht genehmigt wird, sendet das System eine Ablehnungsmitteilung an den Versicherungsnehmer |
-| :x: Fehlerfall 2           | Kurzbeschreibung der Bedingungen bei Eintreten von Fehlerfall 2 |
 
 
 ### Ergebnis / Output
