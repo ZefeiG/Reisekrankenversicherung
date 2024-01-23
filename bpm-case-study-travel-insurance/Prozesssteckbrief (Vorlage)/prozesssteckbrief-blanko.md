@@ -95,7 +95,8 @@ Automatisieren Sie die Antragsbearbeitung, um manuelle Eingaben und menschliche 
 | Endbedingung | Details |
 | ------------ | ------- |
 | :heavy_check_mark: Gutfall | Wenn alle Informationsüberprüfung erfolgreich ist, senden Bestätigungsmail und drucken & senden Vertragsunterlage   |
-| :x: Fehlerfall 1           | Wenn das Audit nicht genehmigt wird, sendet das System eine Ablehnungsmitteilung an den Versicherungsnehmer |
+| :x: Fehlerfall 1           | Wenn die Überprüfung nicht genehmigt wird, sendet das System eine Ablehnungsmitteilung an den Versicherungsnehmer |
+| :x: Fehlerfall 1           | Wenn die Reisewarnung existiert , sendet das System eine Ablehnungsmitteilung an den Versicherungsnehmer |
 
 
 ### Ergebnis / Output
