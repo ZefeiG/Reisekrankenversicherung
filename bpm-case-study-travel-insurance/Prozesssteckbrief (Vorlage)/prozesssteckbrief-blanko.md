@@ -77,7 +77,6 @@ Automatisieren Sie die Antragsbearbeitung, um manuelle Eingaben und menschliche 
 |Reiseende|Date time|
 |Gesamtkosten |Nummer|
 |Anzahl der Personen |Nummer|
-| API-Aufruf |  Das Senden einer Anfrage über das HTTP-Protokoll an einen Server.( travelwarning.api, api-nijas, travel-insurance-api)  |
 
 ## Prozessschritte
 
