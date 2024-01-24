@@ -8,8 +8,8 @@
 ## Kurzbeschreibung
 Der Versicherungsnehmerin macht sein Antragsformular auf der Onlineportal des Versicherungsunternehmens. Sobald das Antragsformular im System eingegangen ist, beginnt der Prozess.
 
-Der erste Schritt besteht darin, mit Hilfe des DMN Tabelle "Persönlichen Daten validieren"zu überprüfen, ob die Angaben des Versicherungsnehmerin  den Anforderungen entsprechen， wie z. B. die Bestimmungen zu Reisezeit und Reisekosten. 
-Danach folgt das DMN Tabelle  "Alter,Wohnort,Anzahl prüfen", mit dem geprüft wird, ob Alter, Herkunftsort und Anzahl der versicherten Personen den Anforderungen entsprechen.
+Der erste Schritt besteht darin, mit Hilfe des DMN Tabelle "Travel Daten prüfen"zu überprüfen, ob die Angaben des Versicherungsnehmerin  den Anforderungen entsprechen， wie z. B. die Bestimmungen zu Reisezeit und Reisekosten. 
+Danach folgt das DMN Tabelle  "Person Daten prüfen", mit dem geprüft wird, ob Alter, Herkunftsort und Anzahl der versicherten Personen den Anforderungen entsprechen.
 Bei einem "Misserfolg" oder einem "sonstigen Fehler" im Prozess wird dem Versicherungsnehmer  eine Ablehnungsnachricht übermittelt.
 
 Der zweite Schritt ist die Prüfung der Reisewarnungen. Stellen Sie fest, ob es Rückgabedaten im Json-Format gibt, indem Sie die REST-API aufrufen. Wenn nicht, beenden Sie die Reisewarnung als Task; wenn ja, müssen Sie die Rückgabe an den Versicherungsnehmer senden
@@ -81,13 +81,28 @@ Automatisieren Sie die Antragsbearbeitung, um manuelle Eingaben und menschliche 
 ## Prozessschritte
 
 ### Prozessschritt 1
-Der Taskname "Daten Lesen".
-Es dient als 'read-input-data' zum Lesen und Verarbeiten von reisekrankenversicherungsbezogenen allen Eingabedaten. Sie konvertiert die JSON-Daten in ein Java-Objekt vom Typ ‘TravelInsuranceRequest’ zur weiteren Verarbeitung. Treten bei der Konvertierung Probleme auf, wird ein Fehler protokolliert und eine benutzerdefinierte Ausnahme ‘TravelInsuranceProcessException’ ausgelöst.
-Diese Daten werden dann später zur Überprüfung des Prozesses verwendet.
+
+Name des Task: "Daten Lesen".
+
+Beschreibung: Es dient als 'read-input-data' zum Lesen und Verarbeiten von reisekrankenversicherungsbezogenen allen Eingabedaten. Sie konvertiert die JSON-Daten in ein Java-Objekt vom Typ ‘TravelInsuranceRequest’ zur weiteren Verarbeitung. Treten bei der Konvertierung Probleme auf, wird ein Fehler protokolliert und eine benutzerdefinierte Ausnahme ‘TravelInsuranceProcessException’ ausgelöst.
+
+Ergebnis des Prozessschnitt: Diese Daten werden dann später zur Überprüfung des Prozesses verwendet.
 
 ### Prozessschritt 2
-Der Taskname "Antragsdaten validieren"
-Dies ist ein "expanded sub-prozess", der zwei Business rule-task enthält, jeweils gefolgt von einem Gateway, das fragt, ob die Prüfung bestanden wurde. Wenn sie bestanden wurde, wird die nächste Aufgabe durchgeführt, wenn sie nicht bestanden wurde, wird eine Ablehnungsnachricht an den Versicherten gesendet.
+
+"Antragsdaten validieren" ist ein Expanded Sub-Prozess. Es enthält zwei Business Rule-Task "Travel Daten prüfen " und "Person Daten prüfen ".
+
+-Name des Task: Business Rule-Task "Travel Daten prüfen ".
+
+-Beschreibung der Task: Nachdem die Prüfung begonnen hat, beginnt es mit der Task "Travel Daten prüfen", die eine DMN-Entscheidungstabelle mit dem Namen "Travel Daten prüfen" verknüpft. Es gibt drei boolesche Werte aus, indem es jede der drei Tasks "TravelCostChecker(Kosten mehr als 0)","TravelStartChecker(Reisebeginn in der Zukunft)", "TravelEndChecker(Reisebeginn vor dem Reiseende)" aufrufen.  Nachdem die Verarbeitung durch die DMN-Entscheidungstabelle abgeschlossen ist, können wir feststellen, ob die Daten der Prüfung bestehen oder nicht.
+
+-Mögliche Entscheidungen nach Prozesschritt durch Gateways: Wenn die Entscheidungstabelle das Ergebnis "True" liefert, wird der Prozess weiter laufen. Lautet das Ergebnis "Falsch", wird eine Ablehnungsnachricht an den Versicherungsnehmer gesendet, und der Vorgang wird beendet.
+
+~Name des Task: Business Rule-Task "Person Daten prüfen ".
+
+~Beschreibung der Task:Als nächstes folgt die Aufgabe "Person Daten prüfen", die mit einer DMN-Entscheidungstabelle namens "Person Daten prüfen" verknüpft ist. Es gibt zwei boolesche Werte aus, indem es jede der drei Tasks "AgeChecker(größer als 18 Jahre alt)","PlaceOfResidenceChecker (Herkunft in Deutschland)" aufrufen.Und dann die Überprüfung, ob die Zahl der Versicherte Personen weniger als 7 beträgt.In der Entscheidungstabelle wird schließlich angegeben, ob der Prüfung  bestanden wurde oder nicht.
+
+~Mögliche Entscheidungen nach Prozesschritt durch Gateways: Wenn die Entscheidungstabelle das Ergebnis "True" liefert, wird der Prozess weiter laufen. Lautet das Ergebnis "Falsch", wird eine Ablehnungsnachricht an den Versicherungsnehmer gesendet, und der Vorgang wird beendet.
 
 ### Prozessschritt 3
 
