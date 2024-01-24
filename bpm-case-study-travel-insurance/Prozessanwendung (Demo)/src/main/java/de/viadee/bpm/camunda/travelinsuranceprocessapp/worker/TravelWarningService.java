@@ -9,12 +9,21 @@ public class TravelWarningService {
     private final RestTemplate restTemplate = new RestTemplate();
     private final String apiUrl = "https://travelwarning.api.bund.dev/";
 
+    String response = restTemplate.getForObject(apiUrl, String.class);
+
+    public boolean hasTravelWarnings() {
+        return response != null && response.length() > 0;
+    }
+
     public String getTravelWarnings() {
-        try {
-            String response = restTemplate.getForObject(apiUrl, String.class);
-            return response;
-        } catch (Exception e) {
-            return "Error while fetching travel warnings: " + e.getMessage();
+        if (hasTravelWarnings()==true) {
+            
+            try {
+                return response;
+            } catch (Exception e) {
+                return "Error while fetching travel warnings: " + e.getMessage();
+            }
         }
+        return "";
     }
 }
