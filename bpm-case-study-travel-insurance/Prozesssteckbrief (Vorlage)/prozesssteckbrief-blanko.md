@@ -81,10 +81,23 @@ Automatisieren Sie die Antragsbearbeitung, um manuelle Eingaben und menschliche 
 ## Prozessschritte
 
 ### Prozessschritt 1
-
-
+Der Taskname "Daten Lesen".
+Es dient als 'read-input-data' zum Lesen und Verarbeiten von reisekrankenversicherungsbezogenen allen Eingabedaten. Sie konvertiert die JSON-Daten in ein Java-Objekt vom Typ ‘TravelInsuranceRequest’ zur weiteren Verarbeitung. Treten bei der Konvertierung Probleme auf, wird ein Fehler protokolliert und eine benutzerdefinierte Ausnahme ‘TravelInsuranceProcessException’ ausgelöst.
+Diese Daten werden dann später zur Überprüfung des Prozesses verwendet.
 
 ### Prozessschritt 2
+Der Taskname "Antragsdaten validieren"
+Dies ist ein "expanded sub-prozess", der zwei Business rule-task enthält, jeweils gefolgt von einem Gateway, das fragt, ob die Prüfung bestanden wurde. Wenn sie bestanden wurde, wird die nächste Aufgabe durchgeführt, wenn sie nicht bestanden wurde, wird eine Ablehnungsnachricht an den Versicherten gesendet.
+
+### Prozessschritt 3
+
+### Prozessschritt 4
+
+### Prozessschritt 5
+
+### Prozessschritt 6
+
+### Prozessschritt 7
 
 
 
