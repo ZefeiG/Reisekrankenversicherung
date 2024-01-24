@@ -106,6 +106,9 @@ Ergebnis des Prozessschnitt: Diese Daten werden dann später zur Überprüfung d
 
 ### Prozessschritt 3
 
+Name des Task:"Reisewarnung prüfen"
+
+
 ### Prozessschritt 4
 
 ### Prozessschritt 5
@@ -123,8 +126,9 @@ Ergebnis des Prozessschnitt: Diese Daten werden dann später zur Überprüfung d
 | Endbedingung | Details |
 | ------------ | ------- |
 | :heavy_check_mark: Gutfall | Wenn alle Informationsüberprüfung erfolgreich ist, senden Bestätigungsmail und drucken & senden Vertragsunterlage   |
-| :x: Fehlerfall 1           | Wenn die Überprüfung nicht genehmigt wird, sendet das System eine Ablehnungsmitteilung an den Versicherungsnehmer |
-| :x: Fehlerfall 1           | Wenn die Reisewarnung existiert , sendet das System eine Ablehnungsmitteilung an den Versicherungsnehmer |
+| :x: Fehlerfall 1           | Wenn die Überprüfung "Travel Daten prüfen" nicht genehmigt wird, sendet das System eine Ablehnungsmitteilung an den Versicherungsnehmer |
+| :x: Fehlerfall 2           | Wenn die Überprüfung "Person Daten prüfen" nicht genehmigt wird, sendet das System eine Ablehnungsmitteilung an den Versicherungsnehmer |
+| :x: Fehlerfall 3           | Wenn die Reisewarnung existiert , sendet das System eine Ablehnungsmitteilung an den Versicherungsnehmer |
 
 
 ### Ergebnis / Output
