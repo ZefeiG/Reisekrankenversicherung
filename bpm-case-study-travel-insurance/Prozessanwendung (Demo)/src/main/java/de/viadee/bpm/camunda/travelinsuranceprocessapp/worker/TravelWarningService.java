@@ -22,10 +22,8 @@ public class TravelWarningService {
                     .build();
 
             HttpResponse<String> response = client.send(request, BodyHandlers.ofString());
-
-            // 解析JSON响应
+            
             JSONObject jsonResponse = new JSONObject(response.body());
-            // 假设返回的JSON对象包含一个名为"warning"的字段
             String warning = jsonResponse.optString("warning", "No warning found");
 
             return warning;
