@@ -11,10 +11,11 @@ import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonObjectFormatVisitor
 import com.google.gson.JsonObject;
 
 import de.viadee.bpm.camunda.travelinsuranceprocessapp.model.TravelData;
+import de.viadee.bpm.camunda.travelinsuranceprocessapp.model.Partner;
 
 public class TravelWarningService {
 
-    public static String checkTravelWarning(TravelData TravelData) {
+    public static String checkTravelWarning(TravelData TravelData,Partner Partner) {
         try {
             HttpClient client = HttpClient.newHttpClient();
             HttpRequest request = HttpRequest.newBuilder()
@@ -25,12 +26,19 @@ public class TravelWarningService {
             
             JSONObject jsonResponse = new JSONObject(response.body());
             String warning = jsonResponse.optString("warning", "No warning found");
+            
+            String mail= Partner.getMail();
 
-            return warning;
+            return EmailService(mail,warning,warning);
+            
         } catch (Exception e) {
             e.printStackTrace();
             return "Error occurred while fetching travel warning";
         }
+    }
+    private static String EmailService(String mail, String warning, String warning2) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'EmailService'");
     }
 
     
