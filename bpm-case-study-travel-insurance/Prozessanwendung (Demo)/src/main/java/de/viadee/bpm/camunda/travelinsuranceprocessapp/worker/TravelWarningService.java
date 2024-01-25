@@ -28,18 +28,17 @@ public class TravelWarningService {
             String warning = jsonResponse.optString("warning", "No warning found");
             
             String mail= Partner.getMail();
+             EmailService send=new EmailService();
 
-            return EmailService(mail,warning,warning);
+            send.sendSimpleMessage(mail,warning,warning);
+            return warning;
             
         } catch (Exception e) {
             e.printStackTrace();
             return "Error occurred while fetching travel warning";
         }
     }
-    private static String EmailService(String mail, String warning, String warning2) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'EmailService'");
-    }
+
 
     
 }
