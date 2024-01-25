@@ -108,7 +108,9 @@ Ergebnis des Prozessschnitt: Diese Daten werden dann später zur Überprüfung d
 
 Name des Task:"Reisewarnung prüfen"
 
-Beschreibung der Task: Diese Task ruft die von Travel Data erhaltenen Informationen über das Reiseziel ab, sendet über die API-Schnittstelle eine HTTP-Anfrage an die Website “https://travelwarning.api.bund.dev/” und stellt dann fest, ob sie JASON Rücksendeinformationen erhält, und wenn ja, sendet sie die geparsten Informationen an den Versicherten, wenn nicht, beendet sie diese Task.
+Beschreibung der Task: Diese Task ruft die von Travel Data erhaltenen Informationen über das Reiseziel ab, sendet über die API-Schnittstelle eine HTTP-Anfrage an die Website “https://travelwarning.api.bund.dev/” und stellt dann durch ein Gateway fest, ob sie JASON Rücksendeinformationen erhält, und wenn ja, sendet es die geparsten Warnungen per Email an den VN, wenn nicht, beendet sie diese Task.
+
+Mögliche Entscheidungen nach Prozesschritt durch Gateways:
 
 
 ### Prozessschritt 4
