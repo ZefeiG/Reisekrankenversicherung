@@ -155,9 +155,9 @@ Folgende Variablen werden während der Ausführung im Prozesskontext abgelegt:
 |  ext_Reiseziel| Externe Variablen | String|Von außen empfangen|
 |  ext_Gesamtkosten | Externe Variablen | BigDecmal| Von außen empfangen |
 |  ext_Geburtsdatum | Externe Variablen | Date| Von außen empfangen |
-|  ext_Vorname | Externe Variablen | Externe Variablen|String|Von außen empfangen|
-|  ext_Nachname | Externe Variablen | Externe Variablen|String|Von außen empfangen|
-|  ext_mail| Externe Variablen | Externe Variablen|String|Von außen empfangen|
+|  ext_Vorname | Externe Variablen |String|Von außen empfangen|
+|  ext_Nachname | Externe Variablen | String|Von außen empfangen|
+|  ext_mail| Externe Variablen | String|Von außen empfangen|
 |  ext_IBAN| Externe Variablen | String|Von außen empfangen|
 |  ext_childOfPolicyHolder|Externe Variablen |boolean|Von außen empfangen|
 |int_StatusTravelPrüfung|Interne Variablen|boolean| Während der Ausführung erzeugte Variablen|
