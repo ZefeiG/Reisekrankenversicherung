@@ -83,8 +83,8 @@ Automatisieren Sie die Antragsbearbeitung, um manuelle Eingaben und menschliche 
 |Reiseziel |Text field|
 |Reisebeginn|Date time|
 |Reiseende|Date time|
-|Gesamtkosten |Nummer|
-|Anzahl der Personen |Nummer|
+|Gesamtkosten | Nummber|
+
 
 ## Prozessschritte
 
@@ -161,7 +161,7 @@ Folgende Variablen werden während der Ausführung im Prozesskontext abgelegt:
 |  ext_Reisebeginn  | Externe Variablen  | Date    |   Von außen empfangen      |
 |  ext_Reiseende | Externe Variablen  | Date    |    Von außen empfangen    |
 |  ext_Reiseziel| Externe Variablen | String|Von außen empfangen|
-|  ext_Gesamtkosten | Externe Variablen | BigDecmal| Von außen empfangen |
+|  ext_Gesamtkosten | Externe Variablen | BigDecimal| Von außen empfangen |
 |  ext_Geburtsdatum | Externe Variablen | Date| Von außen empfangen |
 |  ext_Vorname | Externe Variablen |String|Von außen empfangen|
 |  ext_Nachname | Externe Variablen | String|Von außen empfangen|
@@ -172,7 +172,7 @@ Folgende Variablen werden während der Ausführung im Prozesskontext abgelegt:
 |int_StatusPersonPrüfung|Interne Variablen|boolean| Während der Ausführung erzeugte Variablen|
 |tec_Reisewarnung|Technische Variablen |API|Steurung des Kontrollflusses|
 |ext_AblehnungNachricht|Externe Variablen|String|die nach draußen geschickt wird|
-
+|||||
 ## Verknüpfte Dokumente 
 
 ### DMN Tabelle 
