@@ -109,7 +109,7 @@ Ergebnis des Prozessschnitt: Diese Daten werden dann später zur Überprüfung d
 
 Name des Task:"Reisewarnung prüfen"
 
-Beschreibung der Task: Diese Task ruft die von Travel Data erhaltenen Informationen über das Reiseziel ab, sendet über die API-Schnittstelle eine HTTP-Anfrage an die Website “https://travelwarning.api.bund.dev/”.
+Beschreibung der Task: Diese Task ruft die von Travel Data erhaltenen Informationen über das Reiseziel ab, sendet über die API-Schnittstelle eine HTTP-Anfrage an die Website “https://travelwarning.api.bund.dev/”.Daraufhin erhalten eine Rückmeldung(JASON) von dieser Website.
 
 Mögliche Entscheidungen nach Prozesschritt durch Gateways: Ein Gateway stellt dann fest, ob sie JASON Rücksendeinformationen erhält, und wenn ja, sendet es die geparsten Warnungen mit Ablehnung per Email an den VN, wenn nicht, beendet sie diese Task.
 
@@ -149,15 +149,27 @@ Folgende Variablen werden während der Ausführung im Prozesskontext abgelegt:
 
 | Variablenname | Typ  | Datentyp | Details |
 | ------------- | ---- | -------- | ------- |
-|               |      |          |         |
-|               |      |          |         |
-|               |      |          |         |
+|  ext_Adresse  | Externe Variablen | String   |  Von außen empfangene Adresse  |
+|  ext_Reisebeginn  | Externe Variablen  | Date    |   Von außen empfangen      |
+|  ext_Reiseende | Externe Variablen  | Date    |    Von außen empfangen    |
+|  ext_Reiseziel| Externe Variablen | String|Von außen empfangen|
+|  ext_Gesamtkosten | Externe Variablen | BigDecmal| Von außen empfangen |
+|  ext_Geburtsdatum | Externe Variablen | Date| Von außen empfangen |
+|  ext_Vorname | Externe Variablen | Externe Variablen|String|Von außen empfangen|
+|  ext_Nachname | Externe Variablen | Externe Variablen|String|Von außen empfangen|
+|  ext_mail| Externe Variablen | Externe Variablen|String|Von außen empfangen|
+|  ext_IBAN| Externe Variablen | String|Von außen empfangen|
+|  ext_childOfPolicyHolder|Externe Variablen |boolean|Von außen empfangen|
+|int_StatusTravelPrüfung|Interne Variablen|boolean| Während der Ausführung erzeugte Variablen|
+|int_StatusPersonPrüfung|Interne Variablen|boolean| Während der Ausführung erzeugte Variablen|
+|tec_Reisewarnung|Technische Variablen |API|Steurung des Kontrollflusses|
+|ext_AblehnungNachricht|Externe Variablen|String|die nach draußen geschickt wird|
 
 ## Verknüpfte Dokumente 
 
 ### DMN Tabelle 
 | DMN's Name |  
 |--------|
-|  "Selbstbehalt ermitteln" |   
-|"Alter,Wohnort,Anzahl prüfen"|   
-|"Persönlichen Daten validieren"|  
+|"Selbstbehalt ermitteln" |   
+|"Person Daten prüfen"|   
+|"Travel Daten prüfen "|  
