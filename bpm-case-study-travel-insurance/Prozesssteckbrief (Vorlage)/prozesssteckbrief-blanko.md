@@ -14,9 +14,17 @@ Bei einem "Misserfolg" oder einem "sonstigen Fehler" im Prozess wird dem Versich
 
 Der zweite Schritt ist die Prüfung der Reisewarnungen. Stellen Sie fest, ob es Rückgabedaten im Json-Format gibt, indem Sie die REST-API aufrufen. Wenn nicht, beenden Sie die Reisewarnung als Task; wenn ja, müssen Sie die Rückgabe an den Versicherungsnehmer senden
 
-...
-...
-...
+Danach folgt die Task, im Partnersystem zu prüfen, ob die Partnernummer im Partnersystem zu finden ist, wenn nicht, wird sie im Partner mittels nachgeschlagen, wenn es kein Partner mittels gibt, wird der Kunde im System als Neukunde gespeichert, wenn es einen gibt, wird die Partnernummer im Partnersystem verwendet.
+Wenn die Partnernummer und der Partner gefunden werden und die Adresse übereinstimmt, handelt es sich um eine normale Situation. Stimmt die Adresse nicht überein, wird eine User-task-form durchgeführt, wobei durch Sachbearbeitung zwischen den beiden Adressen gewählt wird.
+Wenn kein Partner gefunden wird, führt es eine User-task-form aus, um die richtige Partnernummer manuell zu ermitteln.
+
+Es folgt die Task "Selbstbehalt Ermitteln", die mit einem Form verknüpft ist, das in verschiedenen Situationen schnell Versicherungsansprüche ergibt.
+
+Der nächste Schritt ist die Speicherung der Informationen im Vertragssystem und die Rückgabe einer Versicherungsnummer, die referenziert werden kann.
+
+Anschließend wird eine Bestätigungs-E-Mail an den Versicherungsnehmer gesendet.
+
+Der letzte Schritt besteht darin, die Verträge auszudrucken und sie an die Versicherten zu senden.
 
 
 ## Technischer Name
