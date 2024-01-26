@@ -36,7 +36,7 @@ public class SearchVNWorker {
 
             if (response.statusCode() == 200) {
                 statusCode = "200";
-
+                JSONObject otherPartner = new JSONObject(response.body());
             } else {
                 statusCode = "404";
             }
@@ -100,6 +100,15 @@ public class SearchVNWorker {
             e.printStackTrace();
         }
     }
+    @JobWorker(type = "compareAddress")
+    public void compareAddress(final JobClient client, final ActivatedJob job, @Variable JSONObject travelInsurance, @Variable JSONObject otherPartner) throws Exception{
+        String sameAddress;
 
-
+        if(travelInsurance.getJSONArray("address").similar(otherPartner.getJSONArray("address"))){
+            sameAddress = "true";
+        }
+        else{
+            sameAddress = "false";
+        }
+    }
 }
