@@ -102,13 +102,13 @@ Automatisieren Sie die Antragsbearbeitung, um manuelle Eingaben und menschliche 
 
 ● Name des Task: Business Rule-Task "Travel Daten prüfen ".
 
-● Beschreibung der Task: Nachdem die Prüfung begonnen hat, beginnt es mit der Task "Travel Daten prüfen", die eine DMN-Entscheidungstabelle mit dem Namen "Travel Daten prüfen" verknüpft. Es gibt drei boolesche Werte aus, indem es jede der drei Tasks "TravelCostChecker(Kosten mehr als 0)","TravelStartChecker(Reisebeginn in der Zukunft)", "TravelEndChecker(Reisebeginn vor dem Reiseende)" aufrufen.  Nachdem die Verarbeitung durch die DMN-Entscheidungstabelle abgeschlossen ist, können wir feststellen, ob die Daten der Prüfung bestehen oder nicht.
+● Beschreibung der Task: Nachdem die Prüfung begonnen hat, beginnt es mit der Task "Travel Daten prüfen", die eine DMN-Entscheidungstabelle mit dem Namen "Travel Daten prüfen" verknüpft. Es importiert drei Werte, indem es jede der drei Tasks "TravelCostChecker(Kosten mehr als 0)","TravelStartChecker(Reisebeginn in der Zukunft)", "TravelEndChecker(Reisebeginn vor dem Reiseende)" aufrufen.  Nachdem die Verarbeitung durch die DMN-Entscheidungstabelle abgeschlossen ist, können wir feststellen, ob die Daten der Prüfung bestehen oder nicht.
 
 ● Mögliche Entscheidungen nach Prozesschritt durch Gateways: Wenn die Entscheidungstabelle das Ergebnis "True" liefert, wird der Prozess weiter laufen. Lautet das Ergebnis "Falsch", wird eine Ablehnungsnachricht an den Versicherungsnehmer gesendet, und der Vorgang wird beendet.
 
 ■  Name des Task: Business Rule-Task "Person Daten prüfen ".
 
-■  Beschreibung der Task:Als nächstes folgt die Aufgabe "Person Daten prüfen", die mit einer DMN-Entscheidungstabelle namens "Person Daten prüfen" verknüpft ist. Es gibt zwei boolesche Werte aus, indem es jede der drei Tasks "AgeChecker(größer als 18 Jahre alt)","PlaceOfResidenceChecker (Herkunft in Deutschland)" aufrufen.Und dann die Überprüfung, ob die Zahl der Versicherte Personen weniger als 7 beträgt.In der Entscheidungstabelle wird schließlich angegeben, ob der Prüfung  bestanden wurde oder nicht.
+■  Beschreibung der Task:Als nächstes folgt die Task "Person Daten prüfen", die mit einer DMN-Entscheidungstabelle namens "Person Daten prüfen" verknüpft ist. Es importiert zwei Werte, indem es jede der zwei Tasks "AgeChecker(größer als 18 Jahre alt)","PlaceOfResidenceChecker (Herkunft in Deutschland)" aufrufen.Und dann die Überprüfung, ob die Zahl der Versicherte Personen weniger als 7 beträgt. In der Entscheidungstabelle wird schließlich eine boolean Werte angegeben, ob der Prüfung  bestanden wurde oder nicht.
 
 ■  Mögliche Entscheidungen nach Prozesschritt durch Gateways: Wenn die Entscheidungstabelle das Ergebnis "True" liefert, wird der Prozess weiter laufen. Lautet das Ergebnis "Falsch", wird eine Ablehnungsnachricht an den Versicherungsnehmer gesendet, und der Vorgang wird beendet.
 
@@ -143,10 +143,29 @@ Automatisieren Sie die Antragsbearbeitung, um manuelle Eingaben und menschliche 
 
 ### Prozessschritt 5
 
+● Name des Task:"Selbstbehalt ermitteln"
+
+● Beschreibung :Task "Selbstbehalt ermitteln", die eine DMN-Entscheidungstabelle mit dem Namen "Selbstbehalt ermitteln" verknüpft. Es importiert drei Werte "Reiseziel", "Dauer", "Kundenstatus" und gibt die entsprechenden Regeln über die DMN-Tabelle an, die den Selbsthalt der Regeln in verschiedenen Fällen angibt.
+
 ### Prozessschritt 6
+"VERTRAG SPEICHERN" ist ein Expanded Sub-Prozess.
+
+● Name des Task:Es enthält Tasks "Partner hinzufügen" und "insurance-policy hinzufügen"
+
+● Beschreibung:Nach dem Start der Prozess werden zwei REST OutBounded Connector-Tasks parallel ( mit parallel Gateway ) ausgeführt. Sie senden jeweils eine POST-Anfrage über die API-Schnittstelle, um Daten im Vertragssystem zu speichern.
+
 
 ### Prozessschritt 7
 
+● Name des Task:" Bestätigungs-mail versenden"
+
+● Beschreibung der Task: Diese Task sendet eine Bestätigungs-E-Mail an den Versicherten über E-Mail-Zustellungssystem von Uipath.
+
+### Prozessschritt 8
+
+● Name des Task:" Vertrags-unterlagen drucken & senden"
+
+● Beschreibung der Task: Diese Task ist der letzte Schritt, bei dem die aus der Task "VERTRAG SPEICHERN" generierte Versicherungsnummer an die Output-Schnittstelle übergeben wird. Anschließend druckt es das Vertragsdokument über das Drucksystem aus und verschickt es per Post.
 
 
 ## Prozessende
@@ -186,11 +205,16 @@ Folgende Variablen werden während der Ausführung im Prozesskontext abgelegt:
 |  ext_mail| Externe Variablen | String|Von außen empfangen|
 |  ext_IBAN| Externe Variablen | String|Von außen empfangen|
 |  ext_childOfPolicyHolder|Externe Variablen |boolean|Von außen empfangen|
-|int_StatusTravelPrüfung|Interne Variablen|boolean| Während der Ausführung erzeugte Variablen|
-|int_StatusPersonPrüfung|Interne Variablen|boolean| Während der Ausführung erzeugte Variablen|
-|tec_Reisewarnung|Technische Variablen |API|Steurung des Kontrollflusses|
-|ext_AblehnungNachricht|Externe Variablen|String|die nach draußen geschickt wird|
-|||||
+| int_StatusTravelPrüfung|Interne Variablen|boolean| Während der Ausführung erzeugte Variablen|
+| int_StatusPersonPrüfung|Interne Variablen|boolean| Während der Ausführung erzeugte Variablen|
+| tec_Reisewarnung|Technische Variablen |API|Steurung des Kontrollflusses|
+| ext_AblehnungNachricht|Externe Variablen|String|die nach draußen geschickt wird|
+| int_Selbstbehalt|Interne Variablen|BigDecimal|Während der Ausführung erzeugte Variablen|
+| int_insuranceTakerId|Interne Variablen|String|Während der Ausführung erzeugte Variablen|
+| int_PartnerId|Interne Variablen|String|Während der Ausführung erzeugte Variablen|
+| ext_Vertragsunterlagen|Externe Variablen|String|die nach draußen geschickt wird|
+| ext_Bestätigungsmail|Externe Variablen|String|die nach draußen geschickt wird|
+
 ## Verknüpfte Dokumente 
 
 ### DMN Tabelle 
