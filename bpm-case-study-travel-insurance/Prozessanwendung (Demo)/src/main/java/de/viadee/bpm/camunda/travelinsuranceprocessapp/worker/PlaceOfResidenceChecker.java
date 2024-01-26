@@ -4,10 +4,11 @@ import io.camunda.zeebe.client.api.response.ActivatedJob;
 import io.camunda.zeebe.client.api.worker.JobClient;
 import io.camunda.zeebe.spring.client.annotation.JobWorker;
 import io.camunda.zeebe.spring.client.annotation.Variable;
+import org.springframework.stereotype.Component;
 
 import java.util.HashSet;
 import java.util.Set;
-
+@Component
 public class PlaceOfResidenceChecker {
     private final Set<String> VALID_COUNTRIES;
 

@@ -5,10 +5,10 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
+
+import de.viadee.bpm.camunda.travelinsuranceprocessapp.service.EmailService;
 import org.json.JSONObject;
 
-import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonObjectFormatVisitor;
-import com.google.gson.JsonObject;
 
 import de.viadee.bpm.camunda.travelinsuranceprocessapp.model.TravelData;
 import de.viadee.bpm.camunda.travelinsuranceprocessapp.model.Partner;
@@ -28,7 +28,7 @@ public class TravelWarningService {
             String warning = jsonResponse.optString("warning", "No warning found");
             
             String mail= Partner.getMail();
-             EmailService send=new EmailService();
+            EmailService send=new EmailService();
 
             send.sendSimpleMessage(mail,warning,warning);
             return warning;

@@ -5,6 +5,7 @@ import io.camunda.zeebe.client.api.worker.JobClient;
 import io.camunda.zeebe.spring.client.annotation.JobWorker;
 import io.camunda.zeebe.spring.client.annotation.Variable;
 import org.json.*;
+import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClientException;
 
 import java.net.URI;
@@ -13,6 +14,7 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.Base64;
 
+@Component
 public class SearchVNWorker {
 
     @JobWorker(type = "searchPartnerId")
@@ -34,12 +36,18 @@ public class SearchVNWorker {
 
             String statusCode;
 
+            JSONObject otherPartner = new JSONObject();
             if (response.statusCode() == 200) {
                 statusCode = "200";
-                JSONObject otherPartner = new JSONObject(response.body());
+                otherPartner = new JSONObject(response.body());
             } else {
                 statusCode = "404";
             }
+            client.newCompleteCommand(job.getKey())
+                    .variable("statusCode", statusCode)
+                    .variable("otherPartner", otherPartner)
+                    .send()
+                    .join();
         } catch (RestClientException e) {
             e.printStackTrace();
         }
@@ -74,6 +82,12 @@ public class SearchVNWorker {
             } else {
                 statusCode = "404";
             }
+
+            client.newCompleteCommand(job.getKey())
+                    .variable("statusCode", statusCode)
+                    .variable("travelInsurance", travelInsurance)
+                    .send()
+                    .join();
         } catch (RestClientException e) {
             e.printStackTrace();
         }
@@ -96,19 +110,27 @@ public class SearchVNWorker {
             HttpResponse<String> response = httpClient.send(postRequest, HttpResponse.BodyHandlers.ofString());
 
             travelInsurance.put("partnerId", response.body());
+            client.newCompleteCommand(job.getKey())
+                    .variable("travelInsurance", travelInsurance)
+                    .send()
+                    .join();
         } catch (RestClientException e) {
             e.printStackTrace();
         }
     }
     @JobWorker(type = "compareAddress")
     public void compareAddress(final JobClient client, final ActivatedJob job, @Variable JSONObject travelInsurance, @Variable JSONObject otherPartner) throws Exception{
-        String sameAddress;
+        Boolean sameAddress;
 
         if(travelInsurance.getJSONArray("address").similar(otherPartner.getJSONArray("address"))){
-            sameAddress = "true";
+            sameAddress = true;
         }
         else{
-            sameAddress = "false";
+            sameAddress = false;
         }
+        client.newCompleteCommand(job.getKey())
+                .variable("sameAddress", sameAddress)
+                .send()
+                .join();
     }
 }
