@@ -209,9 +209,10 @@ Folgende Variablen werden während der Ausführung im Prozesskontext abgelegt:
 | int_StatusPersonPrüfung|Interne Variablen|boolean| Während der Ausführung erzeugte Variablen|
 | tec_Reisewarnung|Technische Variablen |API|Steurung des Kontrollflusses|
 | ext_AblehnungNachricht|Externe Variablen|String|die nach draußen geschickt wird|
+| ext_inserNewPartner|Externe Variablen|String|die nach draußen geschickt wird|
 | int_Selbstbehalt|Interne Variablen|BigDecimal|Während der Ausführung erzeugte Variablen|
-| int_insuranceTakerId|Interne Variablen|String|Während der Ausführung erzeugte Variablen|
-| int_PartnerId|Interne Variablen|String|Während der Ausführung erzeugte Variablen|
+| ext_insuranceTakerId|Externe Variablen|String|die nach draußen geschickt wird|
+| ext_PartnerId|Externe Variablen|String|die nach draußen geschickt wird|
 | ext_Vertragsunterlagen|Externe Variablen|String|die nach draußen geschickt wird|
 | ext_Bestätigungsmail|Externe Variablen|String|die nach draußen geschickt wird|
 
