@@ -90,38 +90,56 @@ Automatisieren Sie die Antragsbearbeitung, um manuelle Eingaben und menschliche 
 
 ### Prozessschritt 1
 
-Name des Task: "Daten Lesen".
+● Name des Task: "Daten Lesen".
 
-Beschreibung: Es dient als 'read-input-data' zum Lesen und Verarbeiten von reisekrankenversicherungsbezogenen allen Eingabedaten. Sie konvertiert die JSON-Daten in ein Java-Objekt vom Typ ‘TravelInsuranceRequest’ zur weiteren Verarbeitung. Treten bei der Konvertierung Probleme auf, wird ein Fehler protokolliert und eine benutzerdefinierte Ausnahme ‘TravelInsuranceProcessException’ ausgelöst.
+● Beschreibung: Es dient als 'read-input-data' zum Lesen und Verarbeiten von reisekrankenversicherungsbezogenen allen Eingabedaten. Sie konvertiert die JSON-Daten in ein Java-Objekt vom Typ ‘TravelInsuranceRequest’ zur weiteren Verarbeitung. Treten bei der Konvertierung Probleme auf, wird ein Fehler protokolliert und eine benutzerdefinierte Ausnahme ‘TravelInsuranceProcessException’ ausgelöst.
 
-Ergebnis des Prozessschnitt: Diese Daten werden dann später zur Überprüfung des Prozesses verwendet.
+● Ergebnis des Prozessschnitt: Diese Daten werden dann später zur Überprüfung des Prozesses verwendet.
 
 ### Prozessschritt 2
 
 "Antragsdaten validieren" ist ein Expanded Sub-Prozess. Es enthält zwei Business Rule-Task "Travel Daten prüfen " und "Person Daten prüfen ".
 
--Name des Task: Business Rule-Task "Travel Daten prüfen ".
+● Name des Task: Business Rule-Task "Travel Daten prüfen ".
 
--Beschreibung der Task: Nachdem die Prüfung begonnen hat, beginnt es mit der Task "Travel Daten prüfen", die eine DMN-Entscheidungstabelle mit dem Namen "Travel Daten prüfen" verknüpft. Es gibt drei boolesche Werte aus, indem es jede der drei Tasks "TravelCostChecker(Kosten mehr als 0)","TravelStartChecker(Reisebeginn in der Zukunft)", "TravelEndChecker(Reisebeginn vor dem Reiseende)" aufrufen.  Nachdem die Verarbeitung durch die DMN-Entscheidungstabelle abgeschlossen ist, können wir feststellen, ob die Daten der Prüfung bestehen oder nicht.
+● Beschreibung der Task: Nachdem die Prüfung begonnen hat, beginnt es mit der Task "Travel Daten prüfen", die eine DMN-Entscheidungstabelle mit dem Namen "Travel Daten prüfen" verknüpft. Es gibt drei boolesche Werte aus, indem es jede der drei Tasks "TravelCostChecker(Kosten mehr als 0)","TravelStartChecker(Reisebeginn in der Zukunft)", "TravelEndChecker(Reisebeginn vor dem Reiseende)" aufrufen.  Nachdem die Verarbeitung durch die DMN-Entscheidungstabelle abgeschlossen ist, können wir feststellen, ob die Daten der Prüfung bestehen oder nicht.
 
--Mögliche Entscheidungen nach Prozesschritt durch Gateways: Wenn die Entscheidungstabelle das Ergebnis "True" liefert, wird der Prozess weiter laufen. Lautet das Ergebnis "Falsch", wird eine Ablehnungsnachricht an den Versicherungsnehmer gesendet, und der Vorgang wird beendet.
+● Mögliche Entscheidungen nach Prozesschritt durch Gateways: Wenn die Entscheidungstabelle das Ergebnis "True" liefert, wird der Prozess weiter laufen. Lautet das Ergebnis "Falsch", wird eine Ablehnungsnachricht an den Versicherungsnehmer gesendet, und der Vorgang wird beendet.
 
-~Name des Task: Business Rule-Task "Person Daten prüfen ".
+■  Name des Task: Business Rule-Task "Person Daten prüfen ".
 
-~Beschreibung der Task:Als nächstes folgt die Aufgabe "Person Daten prüfen", die mit einer DMN-Entscheidungstabelle namens "Person Daten prüfen" verknüpft ist. Es gibt zwei boolesche Werte aus, indem es jede der drei Tasks "AgeChecker(größer als 18 Jahre alt)","PlaceOfResidenceChecker (Herkunft in Deutschland)" aufrufen.Und dann die Überprüfung, ob die Zahl der Versicherte Personen weniger als 7 beträgt.In der Entscheidungstabelle wird schließlich angegeben, ob der Prüfung  bestanden wurde oder nicht.
+■  Beschreibung der Task:Als nächstes folgt die Aufgabe "Person Daten prüfen", die mit einer DMN-Entscheidungstabelle namens "Person Daten prüfen" verknüpft ist. Es gibt zwei boolesche Werte aus, indem es jede der drei Tasks "AgeChecker(größer als 18 Jahre alt)","PlaceOfResidenceChecker (Herkunft in Deutschland)" aufrufen.Und dann die Überprüfung, ob die Zahl der Versicherte Personen weniger als 7 beträgt.In der Entscheidungstabelle wird schließlich angegeben, ob der Prüfung  bestanden wurde oder nicht.
 
-~Mögliche Entscheidungen nach Prozesschritt durch Gateways: Wenn die Entscheidungstabelle das Ergebnis "True" liefert, wird der Prozess weiter laufen. Lautet das Ergebnis "Falsch", wird eine Ablehnungsnachricht an den Versicherungsnehmer gesendet, und der Vorgang wird beendet.
+■  Mögliche Entscheidungen nach Prozesschritt durch Gateways: Wenn die Entscheidungstabelle das Ergebnis "True" liefert, wird der Prozess weiter laufen. Lautet das Ergebnis "Falsch", wird eine Ablehnungsnachricht an den Versicherungsnehmer gesendet, und der Vorgang wird beendet.
 
 ### Prozessschritt 3
 "Reisewarnung prüfen" ist ein Expanded Sub-Prozess. Es enthält ein REST Outbound Connector Task "Reisewarnung prüfen " 
 
-Name des Task:"Reisewarnung prüfen"
+● Name des Task:"Reisewarnung prüfen"
 
-Beschreibung der Task: Diese Task ruft die von Travel Data erhaltenen Informationen über das Reiseziel ab, sendet über die API-Schnittstelle eine HTTP-Anfrage an die Website “https://travelwarning.api.bund.dev/”.Daraufhin erhalten eine Rückmeldung(JASON) von dieser Website.
+● Beschreibung der Task: Diese Task ruft die von Travel Data erhaltenen Informationen über das Reiseziel ab, sendet über die API-Schnittstelle eine HTTP-Anfrage an die Website “https://travelwarning.api.bund.dev/”.Daraufhin erhalten eine Rückmeldung(JASON) von dieser Website.
 
-Mögliche Entscheidungen nach Prozesschritt durch Gateways: Ein Gateway stellt dann fest, ob sie JASON Rücksendeinformationen erhält, und wenn ja, sendet es die geparsten Warnungen mit Ablehnung per Email an den VN, wenn nicht, beendet sie diese Task.
+● Mögliche Entscheidungen nach Prozesschritt durch Gateways: Ein Gateway stellt dann fest, ob sie JASON Rücksendeinformationen erhält, und wenn ja, sendet es die geparsten Warnungen mit Ablehnung per Email an den VN, wenn nicht, beendet sie diese Task.
 
 ### Prozessschritt 4
+"VN im Partnersystem suchen" ist ein Expanded Sub-Prozess. 
+
+● Name des Task: Es enthält Tasks "Nach Partner über persönliche Daten suchen" ,"Nach Partner über PartnerId suchen", "Neukundin im System anlegen", "Passende Partnernummer ergänzen","Adressen vergleichen","Adresse auswählen".
+
+● Beschreibung: 
+• Ein Gateway wird verwendet, um festzustellen, ob die Partnernummer erhalten wurde. und wenn ja, wird die Task “Nach Partner über PartnerId suchen” ausgeführt.wenn nein，wird die Task “Nach Partner über persönliche Daten suchen” ausgeführt.
+
+• Task “Nach Partner über PartnerId suchen”: JobWorker "searchPartnerId" von der “travelInsurance” der JASON-Objekt partnerID, um eine GET-Anfrage zu konstruieren, durch die api-Schnittstelle, um abzufragen, ob der Partner-System, um die Partner-Nummer zu finden, gibt es Rückkehr 200. Misserfolg zu 404 zurück. Das nachfolgende Gateway stellt fest, ob der Partner gefunden wird, wenn ja, führt es die Task “Adressen vergleichen” aus, wenn nein, führt es die User-Task "Passende Partnernummer ergänzen",Dann ist Task beendet.
+
+• Task "Adressen vergleichen": Diese Task besteht darin, festzustellen, ob die vom VN angegebene Adresse und die Adresse im Partnersystem übereinstimmen. Das nachfolgende Gateway stellt fest, ob die Adresse übereinstimmen, wenn ja, Ende der Task. wenn nein, führt es die User-c, Dann ist Task beendet.
+
+•Task "Adresse auswählen": Dies ist eine User-Task, in dem die Sachbearbeitung zwischen den beiden Adressen auswählen.
+
+•Task "Passende Partnernummer ergänzen": Dies ist eine User-Task, die bearbeitet werden muss, wenn der passende Kontakt benötigt wird, und die dann manuell mit der passende Partnernummer gefüllt wird.
+
+•Task “Nach Partner über persönliche Daten suchen”: Diese Task ruft Joborker "searchPersonalData" an, die stellt eine HTTP-Anfrage an "https://travel-insurance-api.aws-playground.viadee.cloud/partner/search" ,dann die zurückgegebenen Ergebnisse"200" oder "404" erhalten. Das nachfolgende Gateway stellt fest, ob der Partner mittles Suche gefunden wird, wenn ja, Ende der Task. Wenn nein, führt es die Task "Neukundin im System anlegen".
+
+•Task “Neukundin im System anlegen": Der Jobworker "insertNewPartner" speichert die Daten des neuen Kunden über einen POST-Anftrag im System.
 
 ### Prozessschritt 5
 
