@@ -131,7 +131,7 @@ Automatisieren Sie die Antragsbearbeitung, um manuelle Eingaben und menschliche 
 
 • Task “Nach Partner über PartnerId suchen”: JobWorker "searchPartnerId" von der “travelInsurance” der JASON-Objekt partnerID, um eine GET-Anfrage zu konstruieren, durch die api-Schnittstelle, um abzufragen, ob der Partner-System, um die Partner-Nummer zu finden, gibt es Rückkehr 200. Misserfolg zu 404 zurück. Das nachfolgende Gateway stellt fest, ob der Partner gefunden wird, wenn ja, führt es die Task “Adressen vergleichen” aus, wenn nein, führt es die User-Task "Passende Partnernummer ergänzen",Dann ist Task beendet.
 
-• Task "Adressen vergleichen": Diese Task besteht darin, festzustellen, ob die vom VN angegebene Adresse und die Adresse im Partnersystem übereinstimmen. Das nachfolgende Gateway stellt fest, ob die Adresse übereinstimmen, wenn ja, Ende der Task. wenn nein, führt es die User-c, Dann ist Task beendet.
+• Task "Adressen vergleichen": Diese Task besteht darin, festzustellen, ob die vom VN angegebene Adresse und die Adresse im Partnersystem übereinstimmen.Dieser Jobworker mit dem Namen “compareAddress” vergleicht die Ähnlichkeit der Adressfelder in den beiden JSON-Objekten “travelInsurance” und “otherPartner”, indem er sie vergleicht und das Ergebnis des Vergleichs in der String-Variablen sameAddress speichert. Ein boolescher Wert wird dann über die Methode “Similar” zurückgegeben. Das nachfolgende Gateway stellt fest, ob die Adresse übereinstimmen, wenn ja, Ende der Task. wenn nein, führt es die User-Task "Adresse auswählen", Dann ist Task beendet.
 
 •Task "Adresse auswählen": Dies ist eine User-Task, in dem die Sachbearbeitung zwischen den beiden Adressen auswählen.
 
