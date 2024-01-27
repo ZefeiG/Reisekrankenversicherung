@@ -14,6 +14,8 @@ import java.util.List;
 @Component
 public class DetailsDerReise {
 
+    // checked was genau die destination ist
+
     @JobWorker(type="DetailsReise")
     public void DetailsReiseBestimmen(final JobClient client, final ActivatedJob job, @Variable String destination){
         String Reiseziel = "";
