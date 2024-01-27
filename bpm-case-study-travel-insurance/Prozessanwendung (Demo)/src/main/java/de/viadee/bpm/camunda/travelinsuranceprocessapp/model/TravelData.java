@@ -51,14 +51,6 @@ public class TravelData {
     }
 
 
-    // Berechnet die Dauer der Reise in Tage
-    public long durationBetweenDates(){
-        LocalDate start = this.start;
-        LocalDate end = this.end;
-
-        Duration duration = Duration.between(start,end);
-        return duration.toDays();
-    }
 
 
     @Override
