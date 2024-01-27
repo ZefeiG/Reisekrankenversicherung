@@ -6,9 +6,8 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.web.client.RestClientException;
 
 import de.viadee.bpm.camunda.travelinsuranceprocessapp.model.Partner;
@@ -17,44 +16,46 @@ import de.viadee.bpm.camunda.travelinsuranceprocessapp.service.EmailService;
 import io.camunda.zeebe.client.api.response.ActivatedJob;
 import io.camunda.zeebe.client.api.worker.JobClient;
 import io.camunda.zeebe.spring.client.annotation.JobWorker;
-import io.camunda.zeebe.spring.client.annotation.Variable;
 
 public class TravelWarningChecker {
 
-    public HttpResponse<String> response;
-
-    private static final Logger logger =  LoggerFactory.getLogger(TravelWarningChecker.class);
+    
     @JobWorker(type = "Reisewarnung")
-    public void Reisewarnung(final JobClient client, final ActivatedJob job, @Variable TravelData destination)throws Exception {
+    public void Reisewarnung(final JobClient client, final ActivatedJob job) throws Exception{
 
-        try {
-             HttpRequest getRequest = HttpRequest.newBuilder()
-                    .uri(new URI("https://travelwarning.api.bund.dev/" + destination))
-                    .GET()
-                    .build();
+        try{
+        HttpRequest getRequest = HttpRequest.newBuilder()
+                .uri(new URI("https://travelwarning.api.bund.dev/travelwarning"))
+                .GET()
+                .build();
 
-            HttpClient httpClient = HttpClient.newHttpClient();
+        HttpClient httpClient = HttpClient.newHttpClient();
 
-            response = httpClient.send(getRequest, BodyHandlers.ofString());
+        HttpResponse<String> response = httpClient.send(getRequest, BodyHandlers.ofString());
 
-            String statusCode;
 
-            JSONObject jsonResponse = new JSONObject();
-            if (response.statusCode() == 200) {
-                statusCode = "200";
-                jsonResponse = new JSONObject(response.body());
-            } else {
-                statusCode = "404";
+        TravelData ziel= new TravelData();
+        boolean hasWarning;
+
+        JSONArray warnings = new JSONArray(response);
+        for (int i = 0; i < warnings.length(); i++) {
+            JSONObject warning = warnings.getJSONObject(i);
+            String countryname = warning.getString("CountryName");
+
+            if (countryname.equalsIgnoreCase(ziel.getDestination())) {
+                hasWarning=true;
+                break;
             }
-
-            client.newCompleteCommand(job.getKey())
-                    .variable("statusCode", statusCode)
-                    .variable("otherPartner", jsonResponse)
-                    .send()
-                    .join();
-        } catch (RestClientException e) {
-            logger.info("Rest-error at searchPartnerId", e);
         }
+            hasWarning=false;
+
+            client.newCompleteCommand(job)
+                .variable("Reisewarnung", hasWarning)
+                .send()
+                .join(); 
+
+        }catch(RestClientException e)
+        {e.printStackTrace();}
     }
 
 
@@ -63,8 +64,7 @@ public class TravelWarningChecker {
     public void ReisewarnungAblehnung(final JobClient client, final ActivatedJob job) throws Exception {
 
         String Warnung="Der Ablehung der Reise";
-            
-        String Text = response.body();
+        String Text="Warnung vorhanden, Reise storniert";
 
         Partner mail= new Partner();
         EmailService send=new EmailService();
