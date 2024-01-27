@@ -98,19 +98,20 @@ Automatisieren Sie die Antragsbearbeitung, um manuelle Eingaben und menschliche 
 
 ### Prozessschritt 2
 
-"Antragsdaten validieren" ist ein Expanded Sub-Prozess. Es enthält zwei Business Rule-Task "Travel Daten prüfen " und "Person Daten prüfen ".
+"Antragsdaten validieren" ist ein Expanded Sub-Prozess. Es enthält 6 Service Task "TravelEndChecker ", "Reisekostenprüfen", "TravelStartChecker", "AgeChecker", "PlaceOfResidenceChecker","checker amount of insuredPartners"
 
-● Name des Task: Business Rule-Task "Travel Daten prüfen ".
+● Name des Task: Service Task "TravelEndChecker ", "Reisekostenprüfen", "TravelStartChecker".
 
-● Beschreibung der Task: Nachdem die Prüfung begonnen hat, beginnt es mit der Task "Travel Daten prüfen", die eine DMN-Entscheidungstabelle mit dem Namen "Travel Daten prüfen" verknüpft. Es importiert drei Werte, indem es jede der drei Tasks "TravelCostChecker(Kosten mehr als 0)","TravelStartChecker(Reisebeginn in der Zukunft)", "TravelEndChecker(Reisebeginn vor dem Reiseende)" aufrufen.  Nachdem die Verarbeitung durch die DMN-Entscheidungstabelle abgeschlossen ist, können wir feststellen, ob die Daten der Prüfung bestehen oder nicht.
+● Beschreibung der Task: Nachdem die Prüfung begonnen hat,beginnend mit der Reiseinformationsprüfung,  Es importiert drei Werte, indem es jede der drei Tasks "TravelCostChecker(Kosten mehr als 0)","TravelStartChecker(Reisebeginn in der Zukunft)", "TravelEndChecker(Reisebeginn vor dem Reiseende)" aufrufen. Dann können wir feststellen, ob die Daten der Prüfung bestehen oder nicht.
 
-● Mögliche Entscheidungen nach Prozesschritt durch Gateways: Wenn die Entscheidungstabelle das Ergebnis "True" liefert, wird der Prozess weiter laufen. Lautet das Ergebnis "Falsch", wird eine Ablehnungsnachricht an den Versicherungsnehmer gesendet, und der Vorgang wird beendet.
+● Mögliche Entscheidungen nach Prozesschritt durch Gateways: gefolgt von einem Gateway, das eine logische Beurteilung vornimmt, bei Nein eine Ablehnungsnachricht an den VN sendet und bei Ja in die Prüfung der persönlichen Informationen übergeht.
 
-■  Name des Task: Business Rule-Task "Person Daten prüfen ".
+■  Name des Task: Service Task "AgeChecker", "PlaceOfResidenceChecker","checker amount of insuredPartners"
 
-■  Beschreibung der Task:Als nächstes folgt die Task "Person Daten prüfen", die mit einer DMN-Entscheidungstabelle namens "Person Daten prüfen" verknüpft ist. Es importiert zwei Werte, indem es jede der zwei Tasks "AgeChecker(größer als 18 Jahre alt)","PlaceOfResidenceChecker (Herkunft in Deutschland)" aufrufen.Und dann die Überprüfung, ob die Zahl der Versicherte Personen weniger als 7 beträgt. In der Entscheidungstabelle wird schließlich eine boolean Werte angegeben, ob der Prüfung  bestanden wurde oder nicht.
 
-■  Mögliche Entscheidungen nach Prozesschritt durch Gateways: Wenn die Entscheidungstabelle das Ergebnis "True" liefert, wird der Prozess weiter laufen. Lautet das Ergebnis "Falsch", wird eine Ablehnungsnachricht an den Versicherungsnehmer gesendet, und der Vorgang wird beendet.
+■  Beschreibung der Task:Als nächstes folgt Person Daten prüfen. Es importiert drei Werte, indem es jede der drei Tasks "AgeChecker(größer als 18 Jahre alt)","PlaceOfResidenceChecker (Herkunft in Deutschland)" , "checkAmount( die Zahl der Versicherte Personen weniger als 7)" aufrufen . Dann wird schließlich boolean Werte angegeben, ob der Prüfung  bestanden wurde oder nicht.
+
+■  Mögliche Entscheidungen nach Prozesschritt durch Gateways: Das eingehende Gateway trifft ein logisches Urteil, wenn es nein, sendet es eine Ablehnungsnachricht an den VN, und wenn ja, endet der Prozess.
 
 ### Prozessschritt 3
 "Reisewarnung prüfen" ist ein Expanded Sub-Prozess. Es enthält ein REST Outbound Connector Task "Reisewarnung prüfen " 
@@ -142,12 +143,15 @@ Automatisieren Sie die Antragsbearbeitung, um manuelle Eingaben und menschliche 
 •Task “Neukundin im System anlegen": Der Jobworker "insertNewPartner" speichert die Daten des neuen Kunden über einen POST-Anftrag im System.
 
 ### Prozessschritt 5
+● Name des Task:“”
+
+### Prozessschritt 6
 
 ● Name des Task:"Selbstbehalt ermitteln"
 
 ● Beschreibung :Task "Selbstbehalt ermitteln", die eine DMN-Entscheidungstabelle mit dem Namen "Selbstbehalt ermitteln" verknüpft. Es importiert drei Werte "Reiseziel", "Dauer", "Kundenstatus" und gibt die entsprechenden Regeln über die DMN-Tabelle an, die den Selbsthalt der Regeln in verschiedenen Fällen angibt.
 
-### Prozessschritt 6
+### Prozessschritt 7
 "VERTRAG SPEICHERN" ist ein Expanded Sub-Prozess.
 
 ● Name des Task:Es enthält Tasks "Partner hinzufügen" und "insurance-policy hinzufügen"
@@ -155,13 +159,13 @@ Automatisieren Sie die Antragsbearbeitung, um manuelle Eingaben und menschliche 
 ● Beschreibung:Nach dem Start der Prozess werden zwei REST OutBounded Connector-Tasks parallel ( mit parallel Gateway ) ausgeführt. Sie senden jeweils eine POST-Anfrage über die API-Schnittstelle, um Daten im Vertragssystem zu speichern.
 
 
-### Prozessschritt 7
+### Prozessschritt 8
 
 ● Name des Task:" Bestätigungs-mail versenden"
 
 ● Beschreibung der Task: Diese Task sendet eine Bestätigungs-E-Mail an den Versicherten über E-Mail-Zustellungssystem von Uipath.
 
-### Prozessschritt 8
+### Prozessschritt 9
 
 ● Name des Task:" Vertrags-unterlagen drucken & senden"
 
