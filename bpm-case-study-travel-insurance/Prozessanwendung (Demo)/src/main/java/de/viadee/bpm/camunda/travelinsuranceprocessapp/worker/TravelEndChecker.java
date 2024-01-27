@@ -10,10 +10,13 @@ import java.time.LocalDate;
 
 @Component
 public class TravelEndChecker {
+
+    static boolean travelStartIsBeforeEnd;
+   
     @JobWorker(type = "check-travel-end", fetchVariables = {"travelStart", "travelEnd"})
     public void checkPlaceOfResidence(final JobClient client, final ActivatedJob job, @Variable String travelStart,
                                       @Variable String travelEnd) {
-        boolean travelStartIsBeforeEnd = startIsBeforeEnd(LocalDate.parse(travelStart), LocalDate.parse(travelEnd));
+        travelStartIsBeforeEnd = startIsBeforeEnd(LocalDate.parse(travelStart), LocalDate.parse(travelEnd));
         client.newCompleteCommand(job.getKey())
                 .variable("travelStartIsBeforeEnd", travelStartIsBeforeEnd)
                 .send()
