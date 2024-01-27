@@ -5,6 +5,8 @@ import io.camunda.zeebe.client.api.worker.JobClient;
 import io.camunda.zeebe.spring.client.annotation.JobWorker;
 import io.camunda.zeebe.spring.client.annotation.Variable;
 import org.json.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClientException;
 
@@ -17,6 +19,7 @@ import java.util.Base64;
 @Component
 public class SearchVNWorker {
 
+    private static final Logger log = LoggerFactory.getLogger(SearchVNWorker.class);
     @JobWorker(type = "searchPartnerId")
     public void searchPartnerId(final JobClient client, final ActivatedJob job, @Variable JSONObject travelInsurance) throws Exception {
 
@@ -49,7 +52,7 @@ public class SearchVNWorker {
                     .send()
                     .join();
         } catch (RestClientException e) {
-            e.printStackTrace();
+            log.info("Rest-error at searchPartnerId", e);
         }
     }
 
@@ -89,7 +92,7 @@ public class SearchVNWorker {
                     .send()
                     .join();
         } catch (RestClientException e) {
-            e.printStackTrace();
+            log.info("Rest-error at searchPersonalData", e);
         }
     }
 
@@ -115,7 +118,7 @@ public class SearchVNWorker {
                     .send()
                     .join();
         } catch (RestClientException e) {
-            e.printStackTrace();
+            log.info("Rest-error at insertNewPartner", e);
         }
     }
     @JobWorker(type = "compareAddress")
