@@ -40,7 +40,7 @@ public class TravelWarningChecker {
             JSONObject countryInfo = jsonObject.getJSONObject(key);
             //das ist ein block wie "23456":{"CountryName":"...","warning":"..."}
             if (countryInfo.getString("CountryName").equalsIgnoreCase(destination)) {
-                //wenn inhalt von key "CountryName" gleich als destination in diese block-------------weil destination ist schriftlich
+                //wenn inhalt von key "CountryName" gleich als destination in diese block
                 if(countryInfo.getString("warning")=="true"){
                     //wenn inhalt von key "warning" in gleiche block gleich als "true" (weil "true" here ist String) 
                     hasWarning=true;}
