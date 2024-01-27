@@ -17,4 +17,17 @@ public class RejectMailSend{
             
         }
     }
+    
+     public void RejectDueToPerson(Partner Partner) {
+        
+        if(AgeChecker.isAdult && PlaceOfResidenceChecker.countryOfResidenceIsValid && AmountChecker.amountLessThan7 == false){
+            String mail= Partner.getMail();
+            EmailService send=new EmailService();
+
+            String Ablehnung="Der Ablehnung der Reise";
+            String Text="Persönliche Daten  nicht mit der Politik übereinstimmen";
+            send.sendSimpleMessage(mail,Ablehnung,Text);
+            
+        }
+    }
 }
