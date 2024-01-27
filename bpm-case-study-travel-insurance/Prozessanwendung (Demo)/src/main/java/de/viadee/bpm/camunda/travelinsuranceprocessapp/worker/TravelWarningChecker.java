@@ -1,117 +1,79 @@
 package de.viadee.bpm.camunda.travelinsuranceprocessapp.worker;
 
-import io.camunda.zeebe.client.api.response.ActivatedJob;
-import io.camunda.zeebe.client.api.worker.JobClient;
-import io.camunda.zeebe.spring.client.annotation.JobWorker;
-import io.camunda.zeebe.spring.client.annotation.Variable;
-import org.json.*;
-import org.springframework.web.client.RestClientException;
-
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.util.Base64;
+import java.net.http.HttpResponse.BodyHandlers;
 
-public class SearchVNWorker {
+import org.json.JSONObject;
+import org.springframework.web.client.RestClientException;
 
-    @JobWorker(type = "searchPartnerId")
-    public void searchPartnerId(final JobClient client, final ActivatedJob job, @Variable JSONObject travelInsurance) throws Exception {
+import de.viadee.bpm.camunda.travelinsuranceprocessapp.model.Partner;
+import de.viadee.bpm.camunda.travelinsuranceprocessapp.service.EmailService;
+import io.camunda.zeebe.client.api.response.ActivatedJob;
+import io.camunda.zeebe.client.api.worker.JobClient;
+import io.camunda.zeebe.spring.client.annotation.JobWorker;
+import io.camunda.zeebe.spring.client.annotation.Variable;
 
-        String partnerId = travelInsurance.getString("partnerId");
+public class TravelWarningChecker {
+    @JobWorker(type = "Reisewarnung")
+    public void Reisewarnung(final JobClient client, final ActivatedJob job,@Variable JSONObject travelInsurance) throws Exception{
 
-        try {
-            HttpRequest getRequest = HttpRequest.newBuilder()
-                    .uri(new URI("https://travel-insurance-api.aws-playground.viadee.cloud/partner/" + partnerId))
-                    .header("Authorization", getBasicAuthenticationHeader("user3", "SHKw24Ti"))
-                    .GET()
-                    .build();
+        try{
+        HttpRequest getRequest = HttpRequest.newBuilder()
+                .uri(new URI("https://travelwarning.api.bund.dev/travelwarning"))
+                .GET()
+                .build();
 
+        HttpClient httpClient = HttpClient.newHttpClient();
+         HttpResponse<String> response = httpClient.send(getRequest, BodyHandlers.ofString());
 
-            HttpClient httpClient = HttpClient.newHttpClient();
+        JSONObject jsonObject = new JSONObject(response.body());
+        //wechseln 'string response.body()'' als Type JSONObject  
+        
+        boolean hasWarning;
+        String destination = travelInsurance.getString("destination");
 
-            HttpResponse<String> response = httpClient.send(getRequest, HttpResponse.BodyHandlers.ofString());
+        for (String key : jsonObject.keySet()) {
+        //diese 'key' ist fuer ganz block wie "23456"
+            JSONObject countryInfo = jsonObject.getJSONObject(key);
+            //das ist ein block wie "23456":{"CountryName":"...","warning":"..."}
+            if (countryInfo.getString("CountryName").equalsIgnoreCase(destination)) {
+                //wenn inhalt von key "CountryName" gleich als destination in diese block-------------weil destination ist schriftlich
+                if(countryInfo.getString("warning")=="true"){
+                    //wenn inhalt von key "warning" in gleiche block gleich als "true" (weil "true" here ist String) 
+                    hasWarning=true;}
+                    else{hasWarning=false;}
+                    //wenn ' "warning": true ' boolean hasWarning ist true, umgekehrt.
 
-            String statusCode;
-
-            if (response.statusCode() == 200) {
-                statusCode = "200";
-
-            } else {
-                statusCode = "404";
+                client.newCompleteCommand(job)
+                .variable("Reisewarnung", hasWarning)
+                .send()
+                .join();
             }
-        } catch (RestClientException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private static final String getBasicAuthenticationHeader(String username, String password) {
-        String valueToEncode = username + ":" + password;
-        return "Basic " + Base64.getEncoder().encodeToString(valueToEncode.getBytes());
-    }
-
-    @JobWorker(type = "searchPersonalData")
-    public void searchPersonalData(final JobClient client, final ActivatedJob job, @Variable JSONObject travelInsurance) throws Exception {
-
-        try {
-            HttpRequest postRequest = HttpRequest.newBuilder()
-                    .uri(new URI("https://travel-insurance-api.aws-playground.viadee.cloud/partner/search"))
-                    .header("Authorization", getBasicAuthenticationHeader("user3", "SHKw24Ti"))
-                    .header("Content-Type", "application/json")
-                    .POST(HttpRequest.BodyPublishers.ofString(travelInsurance.toString()))
-                    .build();
-
-
-            HttpClient httpClient = HttpClient.newHttpClient();
-
-            HttpResponse<String> response = httpClient.send(postRequest, HttpResponse.BodyHandlers.ofString());
-
-            String statusCode;
-
-            if (response.statusCode() == 200) {
-                statusCode = "200";
-                travelInsurance = new JSONObject(response.body());
-            } else {
-                statusCode = "404";
-            }
-        } catch (RestClientException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @JobWorker(type = "insertNewPartner")
-    public void insertNewPartner(final JobClient client, final ActivatedJob job, @Variable JSONObject travelInsurance) throws Exception {
-
-        try {
-            HttpRequest postRequest = HttpRequest.newBuilder()
-                    .uri(new URI("https://travel-insurance-api.aws-playground.viadee.cloud/partner"))
-                    .header("Authorization", getBasicAuthenticationHeader("user3", "SHKw24Ti"))
-                    .header("Content-Type", "application/json")
-                    .POST(HttpRequest.BodyPublishers.ofString(travelInsurance.toString()))
-                    .build();
-
-
-            HttpClient httpClient = HttpClient.newHttpClient();
-
-            HttpResponse<String> response = httpClient.send(postRequest, HttpResponse.BodyHandlers.ofString());
-
-            travelInsurance.put("partnerId", response.body());
-        } catch (RestClientException e) {
-            e.printStackTrace();
-        }
-    }
-
-    @JobWorker(type = "compareAddress")
-    public void compareAddress(final JobClient client, final ActivatedJob job, @Variable JSONObject travelInsurance, @Variable JSONObject otherPartner) throws Exception{
-        String sameAddress;
-
-        if(travelInsurance.getJSONArray("address").similar(otherPartner.getJSONArray("address"))){
-            sameAddress = "true";
-        }
-        else{
-            sameAddress = "false";
-        }
+        } 
+        }catch(RestClientException e)
+        {e.printStackTrace();}
     }
 
 
+
+
+
+
+    @JobWorker(type = "reisewarnung-ablehnung-send")
+    public void ReisewarnungAblehnung(final JobClient client, final ActivatedJob job) throws Exception {
+
+        String Warnung="Der Ablehung der Reise";
+        String Text="Warnung vorhanden, Reise storniert";
+
+        Partner mail= new Partner();
+        EmailService send=new EmailService();
+        send.sendSimpleMessage(mail.getMail(),Warnung,Text);
+    
+    }
+
+    
 }
+
