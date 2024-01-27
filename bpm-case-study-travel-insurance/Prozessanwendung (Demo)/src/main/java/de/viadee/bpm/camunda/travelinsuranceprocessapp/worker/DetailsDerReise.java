@@ -28,19 +28,19 @@ public class DetailsDerReise {
 
         if(Germany.equalsIgnoreCase(destination)){
             client.newCompleteCommand(job)
-                    .variable("Deutschland", Reiseziel)
+                    .variable( "Reiseziel", "Deutschland")
                     .send()
                     .join();
         }
         else if(list.contains(destination)){
             client.newCompleteCommand(job)
-                    .variable("EU-Ausland", Reiseziel)
+                    .variable( "Reiseziel", "EU-Ausland")
                     .send()
                     .join();
         }
         else {
         client.newCompleteCommand(job)
-                .variable("Nicht-EU-Ausland", Reiseziel)
+                .variable( "Reiseziel", "Nicht-EU-Ausland")
                 .send()
                 .join();
         }
