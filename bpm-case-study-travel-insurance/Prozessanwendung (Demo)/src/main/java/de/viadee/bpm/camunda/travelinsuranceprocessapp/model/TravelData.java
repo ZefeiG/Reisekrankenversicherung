@@ -4,6 +4,7 @@ import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.math.BigDecimal;
+import java.time.Duration;
 import java.time.LocalDate;
 
 import static org.apache.commons.lang3.builder.ToStringStyle.NO_CLASS_NAME_STYLE;
@@ -48,6 +49,17 @@ public class TravelData {
     public void setCost(final BigDecimal cost) {
         this.cost = cost;
     }
+
+
+    // Berechnet die Dauer der Reise in Tage
+    public long durationBetweenDates(LocalDate start, LocalDate end){
+        start = this.start;
+        end = this.end;
+
+        Duration duration = Duration.between(start,end);
+        return duration.toDays();
+    }
+
 
     @Override
     public String toString() {
