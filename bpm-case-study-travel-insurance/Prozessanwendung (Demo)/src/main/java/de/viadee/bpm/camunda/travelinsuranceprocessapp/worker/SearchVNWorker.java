@@ -56,7 +56,7 @@ public class SearchVNWorker {
         }
     }
 
-    private static final String getBasicAuthenticationHeader(String username, String password) {
+    private static String getBasicAuthenticationHeader(String username, String password) {
         String valueToEncode = username + ":" + password;
         return "Basic " + Base64.getEncoder().encodeToString(valueToEncode.getBytes());
     }
@@ -122,15 +122,10 @@ public class SearchVNWorker {
         }
     }
     @JobWorker(type = "compareAddress")
-    public void compareAddress(final JobClient client, final ActivatedJob job, @Variable JSONObject travelInsurance, @Variable JSONObject otherPartner) throws Exception{
-        Boolean sameAddress;
+    public void compareAddress(final JobClient client, final ActivatedJob job, @Variable JSONObject travelInsurance, @Variable JSONObject otherPartner){
+        boolean sameAddress;
 
-        if(travelInsurance.getJSONArray("address").similar(otherPartner.getJSONArray("address"))){
-            sameAddress = true;
-        }
-        else{
-            sameAddress = false;
-        }
+        sameAddress = travelInsurance.getJSONArray("address").similar(otherPartner.getJSONArray("address"));
         client.newCompleteCommand(job.getKey())
                 .variable("sameAddress", sameAddress)
                 .send()
