@@ -13,10 +13,12 @@ import java.time.Period;
 public class AgeChecker {
     private final int AGE_OF_ADULTHOOD_IN_GERMANY = 18;
 
+    static boolean isAdult;
+
     @JobWorker(type = "check-age", fetchVariables = {"birthday"})
     public void checkAge(final JobClient client, final ActivatedJob job, @Variable String birthday) {
         int age = convertBirthdayToAge(LocalDate.parse(birthday));
-        boolean isAdult = AGE_OF_ADULTHOOD_IN_GERMANY <= age;
+        isAdult = AGE_OF_ADULTHOOD_IN_GERMANY <= age;
         client.newCompleteCommand(job)
                 .variable("policyHolderIsAdult", isAdult)
                 .send()
