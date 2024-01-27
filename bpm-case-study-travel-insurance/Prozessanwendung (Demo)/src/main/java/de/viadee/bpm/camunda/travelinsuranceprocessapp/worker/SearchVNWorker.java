@@ -14,7 +14,8 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.util.Base64;
+
+import static de.viadee.bpm.camunda.travelinsuranceprocessapp.service.Authentication.getBasicAuthenticationHeader;
 
 @Component
 public class SearchVNWorker {
@@ -28,7 +29,7 @@ public class SearchVNWorker {
         try {
             HttpRequest getRequest = HttpRequest.newBuilder()
                     .uri(new URI("https://travel-insurance-api.aws-playground.viadee.cloud/partner/" + partnerId))
-                    .header("Authorization", getBasicAuthenticationHeader("user3", "SHKw24Ti"))
+                    .header("Authorization", getBasicAuthenticationHeader())
                     .GET()
                     .build();
 
@@ -56,10 +57,6 @@ public class SearchVNWorker {
         }
     }
 
-    private static String getBasicAuthenticationHeader(String username, String password) {
-        String valueToEncode = username + ":" + password;
-        return "Basic " + Base64.getEncoder().encodeToString(valueToEncode.getBytes());
-    }
 
     @JobWorker(type = "searchPersonalData")
     public void searchPersonalData(final JobClient client, final ActivatedJob job, @Variable JSONObject travelInsurance) throws Exception {
@@ -67,7 +64,7 @@ public class SearchVNWorker {
         try {
             HttpRequest postRequest = HttpRequest.newBuilder()
                     .uri(new URI("https://travel-insurance-api.aws-playground.viadee.cloud/partner/search"))
-                    .header("Authorization", getBasicAuthenticationHeader("user3", "SHKw24Ti"))
+                    .header("Authorization", getBasicAuthenticationHeader())
                     .header("Content-Type", "application/json")
                     .POST(HttpRequest.BodyPublishers.ofString(travelInsurance.toString()))
                     .build();
@@ -102,7 +99,7 @@ public class SearchVNWorker {
         try {
             HttpRequest postRequest = HttpRequest.newBuilder()
                     .uri(new URI("https://travel-insurance-api.aws-playground.viadee.cloud/partner"))
-                    .header("Authorization", getBasicAuthenticationHeader("user3", "SHKw24Ti"))
+                    .header("Authorization", getBasicAuthenticationHeader())
                     .header("Content-Type", "application/json")
                     .POST(HttpRequest.BodyPublishers.ofString(travelInsurance.toString()))
                     .build();
