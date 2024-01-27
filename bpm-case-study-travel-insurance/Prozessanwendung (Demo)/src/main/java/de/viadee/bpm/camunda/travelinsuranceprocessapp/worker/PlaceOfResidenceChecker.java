@@ -18,8 +18,8 @@ public class PlaceOfResidenceChecker {
     }
 
     @JobWorker(type = "check-place-of-residence", fetchVariables = {"country"})
-    public void checkPlaceOfResidence(final JobClient client, final ActivatedJob job, @Variable String countryOfResidence) {
-        boolean countryOfResidenceIsValid = VALID_COUNTRIES.contains(countryOfResidence);
+    public void checkPlaceOfResidence(final JobClient client, final ActivatedJob job, @Variable String country) {
+        boolean countryOfResidenceIsValid = VALID_COUNTRIES.contains(country);
         client.newCompleteCommand(job)
                 .variable("countryOfResidenceIsValid", countryOfResidenceIsValid)
                 .send()
