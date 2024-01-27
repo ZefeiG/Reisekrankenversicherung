@@ -17,13 +17,12 @@ import org.springframework.stereotype.Component;
 public class AntragsdatenChecker {
 
     private final int AGE_OF_ADULTHOOD_IN_GERMANY = 18; //für age check
-    private Set<String> VALID_COUNTRIES;//für place check
 
 
-    //Task fuer RiseKosten check 
+    //Task fuer ReiseKosten check
     @JobWorker(type = "check-travel-cost", fetchVariables = {"travelCost"})
-    public void checkTravelCost(final JobClient client, final ActivatedJob job, @Variable int cost) {
-        boolean travelCostIsPositive = cost > 0;
+    public void checkTravelCost(final JobClient client, final ActivatedJob job, @Variable int travelCost) {
+        boolean travelCostIsPositive = travelCost > 0;
         client.newCompleteCommand(job)
                 .variable("travelCostIsValid", travelCostIsPositive)
                 .send()
@@ -97,14 +96,10 @@ public class AntragsdatenChecker {
 
 
 // Task fuer Place check
- public void PlaceOfResidenceChecker() {
-        VALID_COUNTRIES = new HashSet<>();
-        VALID_COUNTRIES.add("Deutschland");
-    }
 
     @JobWorker(type = "check-place-of-residence", fetchVariables = {"country"})
-    public void checkPlaceOfResidence(final JobClient client, final ActivatedJob job, @Variable String countryOfResidence) {
-        boolean countryOfResidenceIsValid = VALID_COUNTRIES.contains(countryOfResidence);
+    public void checkPlaceOfResidence(final JobClient client, final ActivatedJob job, @Variable String country) {
+        boolean countryOfResidenceIsValid = country.equals("Deutschland");
         client.newCompleteCommand(job)
                 .variable("countryOfResidenceIsValid", countryOfResidenceIsValid)
                 .send()
