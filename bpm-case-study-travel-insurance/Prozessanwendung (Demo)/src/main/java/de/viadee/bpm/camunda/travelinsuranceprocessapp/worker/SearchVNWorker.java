@@ -47,9 +47,11 @@ public class SearchVNWorker {
             } else {
                 statusCode = "404";
             }
+            boolean newPartner = false;
             client.newCompleteCommand(job.getKey())
                     .variable("statusCode", statusCode)
                     .variable("otherPartner", otherPartner)
+                    .variable("newPartner", newPartner)
                     .send()
                     .join();
         } catch (RestClientException e) {
@@ -82,10 +84,12 @@ public class SearchVNWorker {
             } else {
                 statusCode = "404";
             }
+            boolean newPartner = false;
 
             client.newCompleteCommand(job.getKey())
                     .variable("statusCode", statusCode)
                     .variable("travelInsurance", travelInsurance)
+                    .variable("newPartner", newPartner)
                     .send()
                     .join();
         } catch (RestClientException e) {
@@ -110,8 +114,11 @@ public class SearchVNWorker {
             HttpResponse<String> response = httpClient.send(postRequest, HttpResponse.BodyHandlers.ofString());
 
             travelInsurance.put("partnerId", response.body());
+            boolean newPartner = true;
+
             client.newCompleteCommand(job.getKey())
                     .variable("travelInsurance", travelInsurance)
+                    .variable("newPartner", newPartner)
                     .send()
                     .join();
         } catch (RestClientException e) {
