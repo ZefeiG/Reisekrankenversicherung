@@ -20,8 +20,9 @@ public class DurationBetweenDates {
     public void getDuration(final JobClient client, final ActivatedJob job, @Variable LocalDate start, @Variable LocalDate end){
 
         Duration duration = Duration.between(start,end);
+        long durationInDays = duration.toDays();
         client.newCompleteCommand(job)
-                .variable("duration",duration)
+                .variable("duration",durationInDays)
                 .send()
                 .join();
     }
