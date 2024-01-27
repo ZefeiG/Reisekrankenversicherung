@@ -2,8 +2,6 @@ package de.viadee.bpm.camunda.travelinsuranceprocessapp.worker;
 
 import java.time.LocalDate;
 import java.time.Period;
-import java.util.HashSet;
-import java.util.Set;
 
 import de.viadee.bpm.camunda.travelinsuranceprocessapp.model.Partner;
 import de.viadee.bpm.camunda.travelinsuranceprocessapp.service.EmailService;
@@ -66,7 +64,7 @@ public class AntragsdatenChecker {
 
 // Wenn ReiseDaten nicht uebereinstimmen, senden Ablehung
     @JobWorker(type = "ablehnungSenden")
-    public void AblehnungSend(final JobClient client, final ActivatedJob job) throws Exception {
+    public void AblehnungSend(final JobClient client, final ActivatedJob job){
         Partner mail= new Partner() ;
         EmailService send=new EmailService();
 
@@ -122,7 +120,7 @@ public class AntragsdatenChecker {
 
 // Wenn Persoenliche Daten nicht uebereinstimmen, senden Ablehung 
     @JobWorker(type = "ablehnungWiederSenden")
-    public void AblehnungWiederSend(final JobClient client, final ActivatedJob job) throws Exception {
+    public void AblehnungWiederSend(final JobClient client, final ActivatedJob job){
         Partner mail= new Partner() ;
         EmailService send=new EmailService();
 
