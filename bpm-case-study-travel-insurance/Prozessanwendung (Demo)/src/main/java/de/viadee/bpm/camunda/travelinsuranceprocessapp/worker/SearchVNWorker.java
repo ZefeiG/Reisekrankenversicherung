@@ -146,12 +146,18 @@ public class SearchVNWorker {
     @JobWorker(type = "compareAddress", fetchVariables = {"vnAddress", "otherPartnerAddress"})
     public void compareAddress(final JobClient client, final ActivatedJob job) {
         boolean sameAddress;
+        
+        JSONObject vnAddress = new JSONObject(job.getVariables()).getJSONObject("vnAddress");
+        JSONObject otherPartnerAddress = new JSONObject(job.getVariables()).getJSONObject("otherPartnerAddress");
 
-        String newVariables = job.getVariables().replace("postCode", "postalCode");
-        String finalVariables = newVariables.replace("country", "countryCode");
+        sameAddress = vnAddress.getString("street").equals(otherPartnerAddress.getString("street")) &&
+                vnAddress.getString("number").equals(otherPartnerAddress.getString("number"))&&
+                vnAddress.getString("city").equals(otherPartnerAddress.getString("city"))&&
+                vnAddress.getString("postCode").equals(otherPartnerAddress.getString("postalCode"))&&
+                vnAddress.getString("country").equals(otherPartnerAddress.getString("countryCode"));
 
-
-        sameAddress = new JSONObject(finalVariables).similar(new JSONObject(finalVariables));
+        System.out.println(job.getVariable("vnAddress"));
+        System.out.println(job.getVariable("otherPartnerAddress"));
         client.newCompleteCommand(job.getKey())
                 .variable("sameAddress", sameAddress)
                 .send()
