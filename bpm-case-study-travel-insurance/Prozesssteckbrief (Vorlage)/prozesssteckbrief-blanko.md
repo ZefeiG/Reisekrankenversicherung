@@ -236,5 +236,4 @@ Folgende Variablen werden während der Ausführung im Prozesskontext abgelegt:
 | DMN's Name |  
 |--------|
 |"Selbstbehalt ermitteln" |   
-|"Person Daten prüfen"|   
-|"Travel Daten prüfen "|  
+
