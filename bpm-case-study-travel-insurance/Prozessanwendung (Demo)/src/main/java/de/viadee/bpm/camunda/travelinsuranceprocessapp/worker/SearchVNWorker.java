@@ -17,6 +17,7 @@ import java.net.http.HttpResponse;
 
 import static de.viadee.bpm.camunda.travelinsuranceprocessapp.service.Authentication.getBasicAuthenticationHeader;
 
+//Klasse die
 @Component
 public class SearchVNWorker {
 
