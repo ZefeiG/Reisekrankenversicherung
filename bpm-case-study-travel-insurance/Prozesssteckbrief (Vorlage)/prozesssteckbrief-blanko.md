@@ -193,8 +193,9 @@ Automatisieren Sie die Antragsbearbeitung, um manuelle Eingaben und menschliche 
 
 | Geschäftsobjekt | Zielsystem | Verantwortlich |
 | --------------- | ---------- | -------------- |
-|  Bestätigungsmail | E-Mail-Versandsystem  | SendGird Outbound Connector|
+|  Bestätigungsmail | E-Mail-Versandsystem  | E-mail System|
 |  Ausgedruckten Versicherungsvertrag  |      Vertragsystem,Drucksystem     |        Output-Managements        |
+|Ablehnungsnachrichrt| E-Mail-Versandsystem|E-mail System|
 
 
 ## Prozesskontext
