@@ -17,6 +17,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class AntragsdatenChecker {
 
+    //Methode zum E-Mail senden
     @Autowired
     private JavaMailSender emailSender;
 
@@ -34,6 +35,7 @@ public class AntragsdatenChecker {
     //Task fuer ReiseKosten check
     @JobWorker(type = "check-travel-cost", fetchVariables = {"travelCost"})
     public void checkTravelCost(final JobClient client, final ActivatedJob job, @Variable int travelCost) {
+        //checke, dass Reisekosten nicht 0 sind
         boolean travelCostIsPositive = travelCost > 0;
         client.newCompleteCommand(job)
                 .variable("travelCostIsValid", travelCostIsPositive)
@@ -47,6 +49,7 @@ public class AntragsdatenChecker {
      @JobWorker(type = "check-travel-end", fetchVariables = {"travelStart", "travelEnd"})
     public void checkTravelEnd(final JobClient client, final ActivatedJob job, @Variable String travelStart,
                                       @Variable String travelEnd) {
+        //checken, wie lang die Reisedauer ist
         boolean travelStartIsBeforeEnd = startIsBeforeEnd(LocalDate.parse(travelStart), LocalDate.parse(travelEnd));
         client.newCompleteCommand(job)
                 .variable("travelStartIsBeforeEnd", travelStartIsBeforeEnd)
@@ -63,6 +66,7 @@ public class AntragsdatenChecker {
 //Task fuer Reisestart check
     @JobWorker(type = "check-travel-start", fetchVariables = {"travelStart"})
     public void checkTravelStart(final JobClient client, final ActivatedJob job, @Variable String travelStart) {
+        //checken, ob der Reisestart in der Zukunft liegt
         boolean travelStartIsInFuture = isInFuture(LocalDate.parse(travelStart));
         client.newCompleteCommand(job)
                 .variable("travelStartIsValid", travelStartIsInFuture)
@@ -78,13 +82,11 @@ public class AntragsdatenChecker {
 
 // Wenn ReiseDaten nicht uebereinstimmen, senden Ablehung
     @JobWorker(type = "ablehnungSenden")
-    public void AblehnungSend(final JobClient client, final ActivatedJob job){
-        Partner mail= new Partner() ;
-        EmailService send=new EmailService();
+    public void AblehnungSend(final JobClient client, final ActivatedJob job, @Variable String mail){
 
         String Ablehnung="Der Ablehnung der Reise";
         String Text="Reisedaten nicht mit der Politik übereinstimmen";
-        sendSimpleMessage(mail.getMail(),Ablehnung,Text);
+        sendSimpleMessage(mail,Ablehnung,Text);
 
     }
 
@@ -92,6 +94,7 @@ public class AntragsdatenChecker {
 // Task fuer age check
     @JobWorker(type = "check-age", fetchVariables = {"birthday"})
     public void checkAge(final JobClient client, final ActivatedJob job, @Variable String birthday) {
+        //checken, ob VN mindestens 18 Jahre alt ist
         int age = convertBirthdayToAge(LocalDate.parse(birthday));
         boolean isAdult = AGE_OF_ADULTHOOD_IN_GERMANY <= age;
         client.newCompleteCommand(job)
@@ -111,6 +114,7 @@ public class AntragsdatenChecker {
 
     @JobWorker(type = "check-place-of-residence", fetchVariables = {"country"})
     public void checkPlaceOfResidence(final JobClient client, final ActivatedJob job, @Variable String country) {
+        //checken, ob Heimatort deutschland ist
         boolean countryOfResidenceIsValid = country.equals("Deutschland");
         client.newCompleteCommand(job)
                 .variable("countryOfResidenceIsValid", countryOfResidenceIsValid)
@@ -122,7 +126,7 @@ public class AntragsdatenChecker {
 // Task fuer VN amount check
     @JobWorker(type = "check-amount")
     public void checkAmount(final JobClient client, final ActivatedJob job, @Variable int numberInsuredPartners){
-
+        //checken, ob es weniger als 7 Vertragspartner sind
         boolean amountLessThan7 = numberInsuredPartners < 7;
 
         client.newCompleteCommand(job.getKey())
@@ -134,13 +138,12 @@ public class AntragsdatenChecker {
 
 // Wenn Persoenliche Daten nicht uebereinstimmen, senden Ablehung 
     @JobWorker(type = "ablehnungWiederSenden")
-    public void AblehnungWiederSend(final JobClient client, final ActivatedJob job){
-        Partner mail= new Partner() ;
-        EmailService send=new EmailService();
+    public void AblehnungWiederSend(final JobClient client, final ActivatedJob job, @Variable String mail){
+
 
         String Ablehnung="Der Ablehnung der Reise";
         String Text="Persönliche Daten nicht mit der Politik übereinstimmen";
-        sendSimpleMessage(mail.getMail(),Ablehnung,Text);
+        sendSimpleMessage(mail,Ablehnung,Text);
 
     }
 

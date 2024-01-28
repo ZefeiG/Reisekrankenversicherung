@@ -31,7 +31,7 @@ public class ProcessAppConfig {
         mailSender.setPort(587);
 
         mailSender.setUsername("Fachprojekt2324@web.de");
-        mailSender.setPassword("?Bombe123!");
+        mailSender.setPassword("!Bombe123!");
 
         Properties props = mailSender.getJavaMailProperties();
         props.put("mail.transport.protocol", "smtp");

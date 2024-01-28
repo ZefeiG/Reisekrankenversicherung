@@ -26,6 +26,7 @@ public class TravelWarningChecker {
     @Autowired
     private JavaMailSender emailSender;
 
+    //Methode zum E-Mail versenden
     public void sendSimpleMessage(String to, String subject, String text) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom("Fachprojekt2324@web.de");
@@ -51,13 +52,14 @@ public class TravelWarningChecker {
         
         boolean hasWarning;
 
+        //Alle Länder in der Liste durchlaufen
         for (Object key : jsonObject.getJSONObject("response").getJSONArray("contentList")) {
-        //diese 'key' ist fuer ganz block wie "23456"
-            //das ist ein block wie "23456":{"CountryName":"...","warning":"..."}
+            //Prüfen, ob das Land das Reiseziel ist
             if (jsonObject.getJSONObject("response").getJSONObject(key.toString()).getString("countryName").equalsIgnoreCase(destination)) {
-                //wenn inhalt von key "CountryName" gleich als destination in diese block
+                //Prüfen, ob beim Reiseziel eine Reisewarnung vorliegt
                 hasWarning = jsonObject.getJSONObject("response").getJSONObject(key.toString()).getBoolean("warning");
 
+                //Worker schließen und Variablen zurücksenden
                 client.newCompleteCommand(job)
                 .variable("Reisewarnung", hasWarning)
                 .send()
@@ -73,15 +75,14 @@ public class TravelWarningChecker {
 
 
 
+    //Ablehnung schicken, wenn eine Reisewarnung vorliegt
     @JobWorker(type = "reisewarnung-ablehnung-send")
-    public void ReisewarnungAblehnung(final JobClient client, final ActivatedJob job) throws Exception {
+    public void ReisewarnungAblehnung(final JobClient client, final ActivatedJob job, @Variable String mail) {
 
-        String Warnung="Der Ablehung der Reise";
-        String Text="Warnung vorhanden, Reise storniert";
+        String Warnung="Ablehnung der Reiseversicherung";
+        String Text="Da eine Reisewarnung für Ihr Reiseziel vorliegt, können wir Sie leider nicht versichern";
 
-        Partner mail= new Partner();
-        EmailService send=new EmailService();
-        sendSimpleMessage(mail.getMail(),Warnung,Text);
+        sendSimpleMessage(mail,Warnung,Text);
 
     }
 

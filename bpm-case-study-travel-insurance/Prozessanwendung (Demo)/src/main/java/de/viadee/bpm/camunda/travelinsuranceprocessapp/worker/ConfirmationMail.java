@@ -13,7 +13,7 @@ import org.springframework.stereotype.Component;
 
 @Component
 public class ConfirmationMail {
-
+    //Methode zum E-Mail senden
     @Autowired
     private JavaMailSender emailSender;
 
@@ -29,7 +29,6 @@ public class ConfirmationMail {
     // Sendet die Bestätigungs-E-Mail, nachdem der Vertrag gespeichert worden ist
     @JobWorker(type = "ConfirmationMail")
     public void SendMail(final JobClient client, final ActivatedJob job, @Variable String mail) {
-        EmailService send = new EmailService();
 
         String CC = "Vielen Dank für Ihr Vertrauen in uns!";
         String Text = "Dies ist eine Bestätigungs-E-Mail für Ihre erfolgreiche Buchung der Reiseversicherung.";
