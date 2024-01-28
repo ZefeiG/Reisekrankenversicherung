@@ -183,9 +183,9 @@ Automatisieren Sie die Antragsbearbeitung, um manuelle Eingaben und menschliche 
 
 | Endbedingung | Details |
 | ------------ | ------- |
-| :heavy_check_mark: Gutfall | Wenn alle Informationsüberprüfung erfolgreich ist, senden Bestätigungsmail und drucken & senden Vertragsunterlage   |
-| :x: Fehlerfall 1           | Wenn die Überprüfung "Travel Daten prüfen" nicht genehmigt wird, sendet das System eine Ablehnungsmitteilung an den Versicherungsnehmer |
-| :x: Fehlerfall 2           | Wenn die Überprüfung "Person Daten prüfen" nicht genehmigt wird, sendet das System eine Ablehnungsmitteilung an den Versicherungsnehmer |
+| :heavy_check_mark: Gutfall | Wenn alle Datenüberprüfungen erfolgreich ist, nehmen Versicherung an.   |
+| :x: Fehlerfall 1           | Wenn die Reisedatenüberprüfung nicht korrekt ist, sendet das System eine Ablehnungsmitteilung an den Versicherungsnehmer |
+| :x: Fehlerfall 2           | Wenn die Persönliche Daten Überprüfung nicht korrekt ist, sendet das System eine Ablehnungsmitteilung an den Versicherungsnehmer |
 | :x: Fehlerfall 3           | Wenn die Reisewarnung existiert , sendet das System eine Ablehnungsmitteilung an den Versicherungsnehmer |
 
 
