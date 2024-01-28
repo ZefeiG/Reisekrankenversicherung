@@ -8,15 +8,17 @@
 ## Kurzbeschreibung
 Der Versicherungsnehmerin macht sein Antragsformular auf der Onlineportal des Versicherungsunternehmens. Sobald das Antragsformular im System eingegangen ist, beginnt der Prozess.
 
-Der erste Schritt besteht darin, mit Hilfe des DMN Tabelle "Travel Daten prüfen"zu überprüfen, ob die Angaben des Versicherungsnehmerin  den Anforderungen entsprechen， wie z. B. die Bestimmungen zu Reisezeit und Reisekosten. 
-Danach folgt das DMN Tabelle  "Person Daten prüfen", mit dem geprüft wird, ob Alter, Herkunftsort und Anzahl der versicherten Personen den Anforderungen entsprechen.
-Bei einem "Misserfolg" oder einem "sonstigen Fehler" im Prozess wird dem Versicherungsnehmer  eine Ablehnungsnachricht übermittelt.
+Der erste Schritt besteht darin, sind drei parallele Tasks, mit denen geprüft wird, ob die Reiseinformationen den Anforderungen entsprechen， wie z. B. die Bestimmungen zu Reisezeit und Reisekosten. 
+Danach folgt drei parallele Tasks, mit dem geprüft wird, ob Alter, Herkunftsort und Anzahl der versicherten Personen den Anforderungen entsprechen.
+Wenn eine dieser beiden Prüfungen nicht erfolgreich ist, wird eine Ablehnungsnachricht an das VN. Wenn alle übereinstimmen, setzen Sie den Prozess fort
 
-Der zweite Schritt ist die Prüfung der Reisewarnungen. Stellen Sie fest, ob es Rückgabedaten im Json-Format gibt, indem Sie die REST-API aufrufen. Wenn nicht, beenden Sie die Reisewarnung als Task; wenn ja, müssen Sie die Rückgabe an den Versicherungsnehmer senden
+Der zweite Schritt ist die Prüfung der Reisewarnungen. Das Vorhandensein einer Reisewarnung wird durch den Aufruf der REST-API festgestellt. Wenn keine Reisewarnung vorliegt, bedeutet dies, dass Sie wie geplant reisen können und der Prozess fortgesetzt wird; wenn eine Reisewarnung vorliegt, wird eine Ablehnungsmeldung an den VN gesendet
 
 Danach folgt die Task, im Partnersystem zu prüfen, ob die Partnernummer im Partnersystem zu finden ist, wenn nicht, wird sie im Partner mittels nachgeschlagen, wenn es kein Partner mittels gibt, wird der Kunde im System als Neukunde gespeichert, wenn es einen gibt, wird die Partnernummer im Partnersystem verwendet.
 Wenn die Partnernummer und der Partner gefunden werden und die Adresse übereinstimmt, handelt es sich um eine normale Situation. Stimmt die Adresse nicht überein, wird eine User-task-form durchgeführt, wobei durch Sachbearbeitung zwischen den beiden Adressen gewählt wird.
 Wenn kein Partner gefunden wird, führt es eine User-task-form aus, um die richtige Partnernummer manuell zu ermitteln.
+
+"Details des Reiseziels ermitteln" und "Dauer der Reise ermitteln".Mit diesen beiden parallelen Aufgaben können wir die Reisezeit der VN ermitteln und feststellen, ob ihr Ziel Deutschland, die EU oder ein Nicht-EU-Land ist
 
 Es folgt die Task "Selbstbehalt Ermitteln", die mit einem Form verknüpft ist, das in verschiedenen Situationen schnell Versicherungsansprüche ergibt.
 
@@ -118,7 +120,7 @@ Automatisieren Sie die Antragsbearbeitung, um manuelle Eingaben und menschliche 
 
 ● Name des Task:"Reisewarnung prüfen"
 
-● Beschreibung der Task: Diese Task ruft die von Travel Data erhaltenen Informationen über das Reiseziel ab, sendet über die API-Schnittstelle eine HTTP-Anfrage an die Website “https://travelwarning.api.bund.dev/”.Daraufhin erhalten eine Rückmeldung(JASON) von dieser Website.
+● Beschreibung der Task: Diese Task ruft die von Travel Data erhaltenen Informationen über das Reiseziel ab, sendet über die API-Schnittstelle eine HTTP-Anfrage an die Website “https://travelwarning.api.bund.dev/”.Daraufhin erhalten eine Rückmeldung(JASON) von dieser Website. ob die Warnung in der zurückgegebenen json wahr oder falsch ist. Wenn falsch, bedeutet dies, dass Sie wie geplant reisen können und der Prozess fortgesetzt wird; wenn wahr, wird eine Ablehnungsnachricht an die VN gesendet.
 
 ● Mögliche Entscheidungen nach Prozesschritt durch Gateways: Ein Gateway stellt dann fest, ob sie JASON Rücksendeinformationen erhält, und wenn ja, sendet es die geparsten Warnungen mit Ablehnung per Email an den VN, wenn nicht, beendet sie diese Task.
 
@@ -143,7 +145,12 @@ Automatisieren Sie die Antragsbearbeitung, um manuelle Eingaben und menschliche 
 •Task “Neukundin im System anlegen": Der Jobworker "insertNewPartner" speichert die Daten des neuen Kunden über einen POST-Anftrag im System.
 
 ### Prozessschritt 5
-● Name des Task:“”
+
+● Name des Task: "Details des Reiseziels ermitteln","Dauer der Reise ermitteln"
+
+● Beschreibung :Diese besteht aus zwei parallelen Service-Tasks, die “DetailsDerReise” und “DurationBetweenDates” aufrufen, um die Dauer der Reise und die Angabe, ob die Reise in der deutschen EU oder außerhalb der EU stattfindet, zu erhalten.
+
+● Mögliche Entscheidungen nach Prozesschritt durch Gateways:Nach dem Parallel-Gateway werden die Werte der beiden Tasks an den nächsten Schritt weitergegeben.
 
 ### Prozessschritt 6
 
@@ -158,18 +165,19 @@ Automatisieren Sie die Antragsbearbeitung, um manuelle Eingaben und menschliche 
 
 ● Beschreibung:Nach dem Start der Prozess werden zwei REST OutBounded Connector-Tasks parallel ( mit parallel Gateway ) ausgeführt. Sie senden jeweils eine POST-Anfrage über die API-Schnittstelle, um Daten im Vertragssystem zu speichern.
 
+● Mögliche Entscheidungen nach Prozesschritt durch Gateways:Nach dem Parallel-Gateway werden der beiden Tasks enden.
 
 ### Prozessschritt 8
 
 ● Name des Task:" Bestätigungs-mail versenden"
 
-● Beschreibung der Task: Diese Task sendet eine Bestätigungs-E-Mail an den Versicherten über E-Mail-Zustellungssystem von Uipath.
+● Beschreibung der Task: Diese Task sendet eine Bestätigungs-E-Mail an den VN.
 
 ### Prozessschritt 9
 
 ● Name des Task:" Vertrags-unterlagen drucken & senden"
 
-● Beschreibung der Task: Diese Task ist der letzte Schritt, bei dem die aus der Task "VERTRAG SPEICHERN" generierte Versicherungsnummer an die Output-Schnittstelle übergeben wird. Anschließend druckt es das Vertragsdokument über das Drucksystem aus und verschickt es per Post.
+● Beschreibung der Task: Diese Task ist der letzte REST Outbounded Connector Task, bei dem die aus der Task "VERTRAG SPEICHERN" generierte Versicherungsnummer per POST-Anfrag übergeben wird. Anschließend druckt es das Vertragsdokument über das Drucksystem aus und verschickt es per Post.
 
 
 ## Prozessende
@@ -209,16 +217,22 @@ Folgende Variablen werden während der Ausführung im Prozesskontext abgelegt:
 |  ext_mail| Externe Variablen | String|Von außen empfangen|
 |  ext_IBAN| Externe Variablen | String|Von außen empfangen|
 |  ext_childOfPolicyHolder|Externe Variablen |boolean|Von außen empfangen|
-| int_StatusTravelPrüfung|Interne Variablen|boolean| Während der Ausführung erzeugte Variablen|
-| int_StatusPersonPrüfung|Interne Variablen|boolean| Während der Ausführung erzeugte Variablen|
+|int_travelCostIsValid|Interne Variablen|boolean|Während der Ausführung erzeugte Variablen|
+|int_travelStartIsBeforeEnd|Interne Variablen|boolean|Während der Ausführung erzeugte Variablen|
+|int_travelStartIsValid|Interne Variablen|boolean|Während der Ausführung erzeugte Variablen|
+|int_policyHolderIsAdult|Interne Variablen|boolean|Während der Ausführung erzeugte Variablen|
+|int_countryOfResidenceIsValid|Interne Variablen|boolean|Während der Ausführung erzeugte Variablen|
+|int_amountOfInsuredPartners|Interne Variablen|boolean|Während der Ausführung erzeugte Variablen|
 | tec_Reisewarnung|Technische Variablen |API|Steurung des Kontrollflusses|
 | ext_AblehnungNachricht|Externe Variablen|String|die nach draußen geschickt wird|
 | ext_inserNewPartner|Externe Variablen|String|die nach draußen geschickt wird|
+|int_duration|Interne Variablen|boolean|Während der Ausführung erzeugte Variablen|
+|int_DetailsReise|Interne Variablen|boolean|Während der Ausführung erzeugte Variablen|
 | int_Selbstbehalt|Interne Variablen|BigDecimal|Während der Ausführung erzeugte Variablen|
 | ext_insuranceTakerId|Externe Variablen|String|die nach draußen geschickt wird|
 | ext_PartnerId|Externe Variablen|String|die nach draußen geschickt wird|
-| ext_Vertragsunterlagen|Externe Variablen|String|die nach draußen geschickt wird|
-| ext_Bestätigungsmail|Externe Variablen|String|die nach draußen geschickt wird|
+| ext_VertragsunterlagenDruckenSenden|Externe Variablen|String|die nach draußen geschickt wird|
+| ext_ConfirmationMail|Externe Variablen|String|die nach draußen geschickt wird|
 
 ## Verknüpfte Dokumente 
 
