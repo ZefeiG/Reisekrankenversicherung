@@ -1,7 +1,6 @@
 package de.viadee.bpm.camunda.travelinsuranceprocessapp.worker;
 
-import de.viadee.bpm.camunda.travelinsuranceprocessapp.model.Partner;
-import de.viadee.bpm.camunda.travelinsuranceprocessapp.service.EmailService;
+
 import io.camunda.zeebe.client.api.response.ActivatedJob;
 import io.camunda.zeebe.client.api.worker.JobClient;
 import io.camunda.zeebe.spring.client.annotation.JobWorker;
@@ -33,5 +32,10 @@ public class ConfirmationMail {
         String CC = "Vielen Dank für Ihr Vertrauen in uns!";
         String Text = "Dies ist eine Bestätigungs-E-Mail für Ihre erfolgreiche Buchung der Reiseversicherung.";
         sendSimpleMessage(mail, CC ,Text);
+
+        //Worker schließen
+        client.newCompleteCommand(job.getKey())
+                .send()
+                .join();
     }
 }

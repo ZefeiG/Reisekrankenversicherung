@@ -6,22 +6,23 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.net.http.HttpResponse.BodyHandlers;
 
-import io.camunda.zeebe.client.api.JsonMapper;
 import org.json.JSONObject;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClientException;
 
-import de.viadee.bpm.camunda.travelinsuranceprocessapp.model.Partner;
-import de.viadee.bpm.camunda.travelinsuranceprocessapp.service.EmailService;
 import io.camunda.zeebe.client.api.response.ActivatedJob;
 import io.camunda.zeebe.client.api.worker.JobClient;
 import io.camunda.zeebe.spring.client.annotation.JobWorker;
 import io.camunda.zeebe.spring.client.annotation.Variable;
 @Component
 public class TravelWarningChecker {
+
+    private static final Logger log = LoggerFactory.getLogger(SearchVNWorker.class);
 
     @Autowired
     private JavaMailSender emailSender;
@@ -66,8 +67,9 @@ public class TravelWarningChecker {
                 .join();
             }
         } 
-        }catch(RestClientException e)
-        {e.printStackTrace();}
+        }catch(RestClientException e) {
+            log.info("Rest-error at searchPartnerId", e);
+        }
     }
 
 
@@ -83,7 +85,10 @@ public class TravelWarningChecker {
         String Text="Da eine Reisewarnung für Ihr Reiseziel vorliegt, können wir Sie leider nicht versichern";
 
         sendSimpleMessage(mail,Warnung,Text);
-
+        //Worker schließen
+        client.newCompleteCommand(job.getKey())
+                .send()
+                .join();
     }
 
     

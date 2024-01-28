@@ -3,8 +3,7 @@ package de.viadee.bpm.camunda.travelinsuranceprocessapp.worker;
 import java.time.LocalDate;
 import java.time.Period;
 
-import de.viadee.bpm.camunda.travelinsuranceprocessapp.model.Partner;
-import de.viadee.bpm.camunda.travelinsuranceprocessapp.service.EmailService;
+
 import io.camunda.zeebe.client.api.response.ActivatedJob;
 import io.camunda.zeebe.client.api.worker.JobClient;
 import io.camunda.zeebe.spring.client.annotation.JobWorker;
@@ -88,6 +87,10 @@ public class AntragsdatenChecker {
         String Text="Reisedaten nicht mit der Politik übereinstimmen";
         sendSimpleMessage(mail,Ablehnung,Text);
 
+        //Worker schließen
+        client.newCompleteCommand(job.getKey())
+                .send()
+                .join();
     }
 
 
@@ -145,6 +148,10 @@ public class AntragsdatenChecker {
         String Text="Persönliche Daten nicht mit der Politik übereinstimmen";
         sendSimpleMessage(mail,Ablehnung,Text);
 
+        //Worker schließen
+        client.newCompleteCommand(job.getKey())
+                .send()
+                .join();
     }
 
 }
