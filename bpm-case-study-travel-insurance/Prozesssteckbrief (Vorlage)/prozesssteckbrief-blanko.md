@@ -33,7 +33,7 @@ Der letzte Schritt besteht darin, die Verträge auszudrucken und sie an die Vers
 
 Der eindeutige Bezeichner des Prozesses lautet wie folgt:
 
-`id_der_prozessdefinition_wie_im_camunda_modeler_angegeben`
+`Collaboration_0tq8mcj`
 
 ## Organisatorischer Kontext
 
@@ -56,8 +56,8 @@ Automatisieren Sie die Antragsbearbeitung, um manuelle Eingaben und menschliche 
 | System | Details |
 | ------ | ------- |
 |    API-Aufruf   |   Verwendet es das HTTP-Protokoll, um eine Anfrage an den Server zu senden, ob eine Reisewarnung vorliegt und ob die IBAN korrekt ist.   |
-|    Partnersystem   |      Es automatisiert abgeglichen wird, ob die Kundin bereits vorhanden ist.    |
-|    E-Mail-Versandsystem    |     E-Mail-Benachrichtigung an Kunden senden    |
+|    Partnersystem   |      Es geprüft wird, ob die VN bereits vorhanden ist.    |
+|    E-Mail-Versandsystem    |     E-Mail-Benachrichtigung an VN senden    |
 |    Vertragsystem |  Eine Reisekrankenversicherung wird im Vertragssystem gespeichert.  |
 
 ## Prozessbeginn
@@ -66,7 +66,7 @@ Automatisieren Sie die Antragsbearbeitung, um manuelle Eingaben und menschliche 
 
 | Startbedingung | Details |
 | -------------- | ------- |
-|   Der Antragformular der Versicherungsnehmerin   |   das auf der Onlineportal eingegebene Informationen     |
+|   Der Antragformular der Versicherungsnehmerin erhalten  |   das auf der Onlineportal eingegebene Informationen     |
 
 ### Input
 
@@ -132,7 +132,9 @@ Automatisieren Sie die Antragsbearbeitung, um manuelle Eingaben und menschliche 
 ● Beschreibung: 
 • Ein Gateway wird verwendet, um festzustellen, ob die Partnernummer erhalten wurde. und wenn ja, wird die Task “Nach Partner über PartnerId suchen” ausgeführt.wenn nein，wird die Task “Nach Partner über persönliche Daten suchen” ausgeführt.
 
-• Task “Nach Partner über PartnerId suchen”: JobWorker "searchPartnerId" von der “travelInsurance” der JASON-Objekt partnerID, um eine GET-Anfrage zu konstruieren, durch die api-Schnittstelle, um abzufragen, ob der Partner-System, um die Partner-Nummer zu finden, gibt es Rückkehr 200. Misserfolg zu 404 zurück. Das nachfolgende Gateway stellt fest, ob der Partner gefunden wird, wenn ja, führt es die Task “Adressen vergleichen” aus, wenn nein, führt es die User-Task "Passende Partnernummer ergänzen",Dann ist Task beendet.
+• Task “searchID”:Das ist eine REST Outbounded Connector-Task, um eine GET-Anfrage zu konstruieren, durch die api-Schnittstelle, um abzufragen, ob der Partner-System, um die Partner-Nummer zu finden, gibt es Rückkehr 200. Das nachfolgende Gateway stellt fest, ob der Partner gefunden wird, wenn ja, führt es die Task “Adressen vergleichen” aus, wenn Fehler (Angeheftet unterbrechend) tritt ein, führt es die REST Outbounded Connector-Task "Partner über Name suchen".
+
+• Task "Partner über Name suchen":Das ist eine REST Outbounded Connector-Task, um eine GET-Anfrage zu konstruieren, durch die api-Schnittstelle, um abzufragen, ob der PartnerSystem, um die Name zu finden. Nachdem es gefunden wurde, wird es in nächsten Task "Passende Partnernummer ergänzen" ausgeführt
 
 • Task "Adressen vergleichen": Diese Task besteht darin, festzustellen, ob die vom VN angegebene Adresse und die Adresse im Partnersystem übereinstimmen.Dieser Jobworker mit dem Namen “compareAddress” vergleicht die Ähnlichkeit der Adressfelder in den beiden JSON-Objekten “travelInsurance” und “otherPartner”, indem er sie vergleicht und das Ergebnis des Vergleichs in der String-Variablen sameAddress speichert. Ein boolescher Wert wird dann über die Methode “Similar” zurückgegeben. Das nachfolgende Gateway stellt fest, ob die Adresse übereinstimmen, wenn ja, Ende der Task. wenn nein, führt es die User-Task "Adresse auswählen", Dann ist Task beendet.
 
@@ -194,7 +196,7 @@ Automatisieren Sie die Antragsbearbeitung, um manuelle Eingaben und menschliche 
 | Geschäftsobjekt | Zielsystem | Verantwortlich |
 | --------------- | ---------- | -------------- |
 |  Bestätigungsmail | E-Mail-Versandsystem  | E-mail System|
-|  Ausgedruckten Versicherungsvertrag  |      Vertragsystem,Drucksystem     |        Output-Managements        |
+|  Ausgedruckten Versicherungsvertrag  |      Vertragsystem,Drucksystem     |    Output-Managements        |
 |Ablehnungsnachrichrt| E-Mail-Versandsystem|E-mail System|
 
 
@@ -233,7 +235,7 @@ Folgende Variablen werden während der Ausführung im Prozesskontext abgelegt:
 ## Verknüpfte Dokumente 
 
 ### DMN Tabelle 
-| DMN's Name |  
-|--------|
-|"Selbstbehalt ermitteln" |   
+| DMN's Name | Details|
+|--------|-------|
+|"Selbstbehalt ermitteln" |  Schnelles Ermitteln eines Anspruchsbetrags auf der Grundlage verschiedener Umstände |
 
