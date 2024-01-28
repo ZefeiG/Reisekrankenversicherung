@@ -11,16 +11,4 @@ import io.camunda.zeebe.spring.client.annotation.Variable;
 @Service
 public class EmailService {
 
-    @Autowired
-    private JavaMailSender mailSender;
-
-    public void sendSimpleMessage(String to, String subject, String text) {
-
-        SimpleMailMessage message = new SimpleMailMessage(); 
-        message.setFrom("yourEmail@example.com");
-        message.setTo(to); 
-        message.setSubject(subject); 
-        message.setText(text);
-        mailSender.send(message);
-    }
 }

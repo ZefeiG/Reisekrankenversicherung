@@ -8,6 +8,9 @@ import java.net.http.HttpResponse.BodyHandlers;
 
 import io.camunda.zeebe.client.api.JsonMapper;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClientException;
 
@@ -19,6 +22,18 @@ import io.camunda.zeebe.spring.client.annotation.JobWorker;
 import io.camunda.zeebe.spring.client.annotation.Variable;
 @Component
 public class TravelWarningChecker {
+
+    @Autowired
+    private JavaMailSender emailSender;
+
+    public void sendSimpleMessage(String to, String subject, String text) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setFrom("Fachprojekt2324@web.de");
+        message.setTo(to);
+        message.setSubject(subject);
+        message.setText(text);
+        emailSender.send(message);
+    }
     @JobWorker(type = "Reisewarnung")
     public void Reisewarnung(final JobClient client, final ActivatedJob job,@Variable String destination) throws Exception{
 
@@ -37,7 +52,6 @@ public class TravelWarningChecker {
         boolean hasWarning;
 
         for (Object key : jsonObject.getJSONObject("response").getJSONArray("contentList")) {
-            System.out.println(key.toString());
         //diese 'key' ist fuer ganz block wie "23456"
             //das ist ein block wie "23456":{"CountryName":"...","warning":"..."}
             if (jsonObject.getJSONObject("response").getJSONObject(key.toString()).getString("countryName").equalsIgnoreCase(destination)) {
@@ -67,8 +81,8 @@ public class TravelWarningChecker {
 
         Partner mail= new Partner();
         EmailService send=new EmailService();
-        send.sendSimpleMessage(mail.getMail(),Warnung,Text);
-    
+        sendSimpleMessage(mail.getMail(),Warnung,Text);
+
     }
 
     

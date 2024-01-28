@@ -31,18 +31,24 @@ public class DetailsDerReise {
                     .variable( "Reiseziel", "Deutschland")
                     .send()
                     .join();
+            System.out.println("deutschland");
+            System.out.println(destination);
         }
         else if(list.contains(destination)){
             client.newCompleteCommand(job)
                     .variable( "Reiseziel", "EU-Ausland")
                     .send()
                     .join();
+            System.out.println("ist drin");
+            System.out.println(destination);
         }
         else {
         client.newCompleteCommand(job)
                 .variable( "Reiseziel", "Nicht-EU-Ausland")
                 .send()
                 .join();
+            System.out.println("nicht drin");
+            System.out.println(destination);
         }
     }
 }

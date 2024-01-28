@@ -6,6 +6,8 @@ import org.springframework.stereotype.Component;
 
 import java.time.Duration;
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+import java.util.Date;
 
 import io.camunda.zeebe.client.api.response.ActivatedJob;
 import io.camunda.zeebe.client.api.worker.JobClient;
@@ -19,10 +21,10 @@ public class DurationBetweenDates {
     @JobWorker(type = "duration")
     public void getDuration(final JobClient client, final ActivatedJob job, @Variable LocalDate start, @Variable LocalDate end){
 
-        Duration duration = Duration.between(start,end);
-        long durationInDays = duration.toDays();
+        long duration = ChronoUnit.DAYS.between(start, end);
+        System.out.println(duration);
         client.newCompleteCommand(job)
-                .variable("duration",durationInDays)
+                .variable("duration",duration)
                 .send()
                 .join();
     }
