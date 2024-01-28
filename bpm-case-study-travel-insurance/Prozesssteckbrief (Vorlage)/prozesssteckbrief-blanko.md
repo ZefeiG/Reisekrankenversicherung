@@ -159,13 +159,10 @@ Automatisieren Sie die Antragsbearbeitung, um manuelle Eingaben und menschliche 
 ● Beschreibung :Task "Selbstbehalt ermitteln", die eine DMN-Entscheidungstabelle mit dem Namen "Selbstbehalt ermitteln" verknüpft. Es importiert drei Werte "Reiseziel", "Dauer", "Kundenstatus" und gibt die entsprechenden Regeln über die DMN-Tabelle an, die den Selbsthalt der Regeln in verschiedenen Fällen angibt.
 
 ### Prozessschritt 7
-"VERTRAG SPEICHERN" ist ein Expanded Sub-Prozess.
 
-● Name des Task:Es enthält Tasks "Partner hinzufügen" und "insurance-policy hinzufügen"
+● Name des Task: REST Outbounded Connector - Task " Vertrag speichern "
 
-● Beschreibung:Nach dem Start der Prozess werden zwei REST OutBounded Connector-Tasks parallel ( mit parallel Gateway ) ausgeführt. Sie senden jeweils eine POST-Anfrage über die API-Schnittstelle, um Daten im Vertragssystem zu speichern.
-
-● Mögliche Entscheidungen nach Prozesschritt durch Gateways:Nach dem Parallel-Gateway werden der beiden Tasks enden.
+● Beschreibung:Nach dem Start der Task werden REST OutBounded Connector-Tasks ausgeführt. Sie senden jeweils eine POST-Anfrage über die API-Schnittstelle, um Daten im Vertragssystem zu speichern.
 
 ### Prozessschritt 8
 
@@ -229,8 +226,6 @@ Folgende Variablen werden während der Ausführung im Prozesskontext abgelegt:
 |int_duration|Interne Variablen|boolean|Während der Ausführung erzeugte Variablen|
 |int_DetailsReise|Interne Variablen|boolean|Während der Ausführung erzeugte Variablen|
 | int_Selbstbehalt|Interne Variablen|BigDecimal|Während der Ausführung erzeugte Variablen|
-| ext_insuranceTakerId|Externe Variablen|String|die nach draußen geschickt wird|
-| ext_PartnerId|Externe Variablen|String|die nach draußen geschickt wird|
 | ext_VertragsunterlagenDruckenSenden|Externe Variablen|String|die nach draußen geschickt wird|
 | ext_ConfirmationMail|Externe Variablen|String|die nach draußen geschickt wird|
 
